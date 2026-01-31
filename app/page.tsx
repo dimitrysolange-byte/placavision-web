@@ -19,13 +19,14 @@ export default async function HomePage() {
         minHeight: "100vh",
         backgroundColor: "#ffffff",
         color: "#4D4D4D",
+        fontFamily: "system-ui, sans-serif",
       }}
     >
-      {/* HERO */}
+      {/* ================= HERO ================= */}
       <section
         style={{
           position: "relative",
-          padding: "100px 20px",
+          padding: "96px 20px",
           overflow: "hidden",
         }}
       >
@@ -35,7 +36,7 @@ export default async function HomePage() {
             position: "absolute",
             inset: 0,
             background:
-              "linear-gradient(135deg, #005B96, #4D4D4D, #00A878)",
+              "linear-gradient(135deg, #005B96 0%, #4D4D4D 50%, #00A878 100%)",
           }}
         />
 
@@ -44,7 +45,7 @@ export default async function HomePage() {
           style={{
             position: "absolute",
             inset: 0,
-            backgroundColor: "rgba(0,0,0,0.25)",
+            backgroundColor: "rgba(0,0,0,0.35)",
           }}
         />
 
@@ -54,62 +55,89 @@ export default async function HomePage() {
             position: "relative",
             maxWidth: 1200,
             margin: "0 auto",
+            padding: "0 12px",
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
             textAlign: "center",
             color: "#ffffff",
           }}
         >
+          {/* TITLE */}
           <h1
             style={{
-              fontSize: "clamp(28px, 6vw, 48px)",
-              fontWeight: 700,
+              fontSize: "clamp(30px, 6vw, 52px)",
+              fontWeight: 800,
+              lineHeight: 1.15,
               marginBottom: 20,
             }}
           >
             {home.heroTitle}
           </h1>
 
+          {/* SUBTITLE */}
           <p
             style={{
-              maxWidth: 720,
-              margin: "0 auto 32px",
-              fontSize: 18,
-              opacity: 0.9,
+              maxWidth: 760,
+              fontSize: "clamp(16px, 4vw, 20px)",
+              opacity: 0.92,
+              marginBottom: 36,
             }}
           >
             {home.heroSubtitle}
           </p>
 
+          {/* CTA */}
           <a
             href={home.ctaUrl}
             style={{
               display: "inline-block",
-              padding: "14px 32px",
+              padding: "16px 36px",
               backgroundColor: "#00A878",
               color: "#ffffff",
-              borderRadius: 8,
-              fontWeight: 600,
+              borderRadius: 10,
+              fontWeight: 700,
+              fontSize: 16,
               textDecoration: "none",
-              boxShadow: "0 8px 20px rgba(0,0,0,0.25)",
+              boxShadow: "0 10px 26px rgba(0,0,0,0.35)",
+              transition: "all .2s ease",
             }}
           >
             {home.ctaText}
           </a>
 
+          {/* IMAGE */}
           {home.heroImage && (
             <img
               src={`https://placavision-cms.onrender.com${home.heroImage.url}`}
               alt="Hero"
               style={{
-                marginTop: 48,
+                marginTop: 56,
                 width: "100%",
-                maxWidth: 420,
-                borderRadius: 20,
-                boxShadow: "0 20px 40px rgba(0,0,0,0.4)",
+                maxWidth: 460,
+                borderRadius: 24,
+                border: "2px solid rgba(255,255,255,0.25)",
+                boxShadow: "0 24px 50px rgba(0,0,0,0.45)",
               }}
             />
           )}
         </div>
       </section>
+
+      {/* ================= PLACEHOLDER FOR NEW SECTIONS ================= */}
+      {/* 
+        ↓↓↓
+
+        Cada nueva sección que agregues en Strapi
+        la vas a renderizar aquí debajo.
+
+        Ejemplo:
+
+        {home.miCampoNuevo && (
+          <section>...</section>
+        )}
+
+      */}
     </main>
   );
 }
