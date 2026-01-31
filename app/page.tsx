@@ -1,27 +1,33 @@
-
 async function getHome() {
   const res = await fetch(
-    "https://placavision-cms.onrender.com/api/home?populate=deep",
-    { cache: "no-store" }
+    "https://placavision-cms.onrender.com/api/home?populate=*",
+    {
+      cache: "no-store",
+    }
   );
 
   return res.json();
 }
 
 export default async function HomePage() {
-  const data = await getHome();
-  const home = data?.data?.attributes;
+  const json = await getHome();
+
+  // Strapi v4 structure
+  const home = json?.data?.attributes;
 
   if (!home) {
-    return <main>Error cargando contenido</main>;
+    return (
+      <main style={{ padding: 40 }}>
+        <h1>Error cargando contenido</h1>
+        <pre>{JSON.stringify(json, null, 2)}</pre>
+      </main>
+    );
   }
 
-  const sections = Array.isArray(home.sections)
-    ? home.sections
-    : home.sections?.data || [];
+  const sections = home.sections || [];
 
   return (
-    <main style={{ minHeight: "100vh", background: "#fff" }}>
+    <main style={{ minHeight: "100vh", background: "#ffffff" }}>
       {sections.map((section: any, index: number) => {
         switch (section.__component) {
           /* ================= HERO ================= */
@@ -35,6 +41,7 @@ export default async function HomePage() {
                   overflow: "hidden",
                 }}
               >
+                {/* BACKGROUND */}
                 <div
                   style={{
                     position: "absolute",
@@ -43,11 +50,13 @@ export default async function HomePage() {
                       "linear-gradient(135deg,#005B96,#4D4D4D,#00A878)",
                   }}
                 />
+
+                {/* OVERLAY */}
                 <div
                   style={{
                     position: "absolute",
                     inset: 0,
-                    background: "rgba(0,0,0,.35)",
+                    background: "rgba(0,0,0,0.35)",
                   }}
                 />
 
@@ -56,7 +65,7 @@ export default async function HomePage() {
                     position: "relative",
                     maxWidth: 1200,
                     margin: "0 auto",
-                    color: "#fff",
+                    color: "#ffffff",
                     textAlign: "center",
                   }}
                 >
@@ -88,8 +97,9 @@ export default async function HomePage() {
                       padding: "14px 32px",
                       borderRadius: 8,
                       fontWeight: 600,
-                      color: "#fff",
+                      color: "#ffffff",
                       textDecoration: "none",
+                      boxShadow: "0 8px 24px rgba(0,0,0,.25)",
                     }}
                   >
                     {section.ctaText}
@@ -113,7 +123,9 @@ export default async function HomePage() {
 
                 {Array.isArray(section.content) &&
                   section.content.map((block: any, i: number) => (
-                    <p key={i}>{block.children?.[0]?.text}</p>
+                    <p key={i} style={{ marginBottom: 12 }}>
+                      {block.children?.[0]?.text}
+                    </p>
                   ))}
               </section>
             );
@@ -145,7 +157,7 @@ export default async function HomePage() {
                       <li
                         key={i}
                         style={{
-                          background: "#fff",
+                          background: "#ffffff",
                           padding: 24,
                           borderRadius: 12,
                           boxShadow: "0 6px 20px rgba(0,0,0,.08)",
@@ -168,7 +180,7 @@ export default async function HomePage() {
                 style={{
                   padding: "100px 16px",
                   background: "#005B96",
-                  color: "#fff",
+                  color: "#ffffff",
                   textAlign: "center",
                 }}
               >
@@ -182,7 +194,7 @@ export default async function HomePage() {
                     padding: "16px 36px",
                     borderRadius: 10,
                     fontWeight: 700,
-                    color: "#000",
+                    color: "#000000",
                     textDecoration: "none",
                   }}
                 >
