@@ -1,3 +1,4 @@
+
 async function getHome() {
   const res = await fetch(
     "https://placavision-cms.onrender.com/api/home?populate=deep",
@@ -9,11 +10,19 @@ async function getHome() {
 
 export default async function HomePage() {
   const data = await getHome();
-  const home = data.data.attributes;
+  const home = data?.data?.attributes;
+
+  if (!home) {
+    return <main>Error cargando contenido</main>;
+  }
+
+  const sections = Array.isArray(home.sections)
+    ? home.sections
+    : home.sections?.data || [];
 
   return (
     <main style={{ minHeight: "100vh", background: "#fff" }}>
-      {home.sections?.map((section: any, index: number) => {
+      {sections.map((section: any, index: number) => {
         switch (section.__component) {
           /* ================= HERO ================= */
           case "sections.hero":
@@ -26,7 +35,6 @@ export default async function HomePage() {
                   overflow: "hidden",
                 }}
               >
-                {/* background */}
                 <div
                   style={{
                     position: "absolute",
@@ -103,9 +111,10 @@ export default async function HomePage() {
               >
                 <h2 style={{ marginBottom: 24 }}>{section.title}</h2>
 
-                <div
-                  dangerouslySetInnerHTML={{ __html: section.content }}
-                />
+                {Array.isArray(section.content) &&
+                  section.content.map((block: any, i: number) => (
+                    <p key={i}>{block.children?.[0]?.text}</p>
+                  ))}
               </section>
             );
 
