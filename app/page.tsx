@@ -9,7 +9,7 @@ async function getHome() {
 
 export default async function HomePage() {
   const data = await getHome();
-  const home = data.data;
+  const home = data.data.attributes;
 
   return (
     <main style={{ minHeight: "100vh", background: "#fff" }}>
