@@ -17,7 +17,16 @@ function renderRichText(blocks: any[]) {
   return blocks.map((block, i) => {
     if (block.type === "paragraph") {
       return (
-        <p key={i} style={{ marginBottom: 16, lineHeight: 1.6 }}>
+        <p
+          key={i}
+          style={{
+            marginBottom: 16,
+            lineHeight: 1.6,
+            maxWidth: 720,
+            marginLeft: "auto",
+            marginRight: "auto",
+          }}
+        >
           {block.children?.map((c: any) => c.text).join("")}
         </p>
       );
@@ -28,8 +37,6 @@ function renderRichText(blocks: any[]) {
 
 export default async function HomePage() {
   const data = await getHome();
-
-  // 🔴 LÍNEA QUE CONFIRMASTE QUE FUNCIONA
   const home = data?.data;
 
   if (!home) {
@@ -47,18 +54,11 @@ export default async function HomePage() {
         color: "#ffffff",
         minHeight: "100vh",
         background:
-          "linear-gradient(135deg,#005B96 0%,#4D4D4D 40%,#00A878 70%,#005B96 100%)",
+          "linear-gradient(135deg,#005B96 0%,#004d40 40%,#00A878 70%,#005B96 100%)",
       }}
     >
       {/* ================= HERO ================= */}
-      <section
-        style={{
-          padding: "100px 20px",
-          textAlign: "center",
-          background:
-            "linear-gradient(135deg,#005B96 0%,#4D4D4D 50%,#00A878 100%)",
-        }}
-      >
+      <section style={{ padding: "100px 20px", textAlign: "center" }}>
         <h1 style={{ fontSize: "clamp(32px,6vw,56px)", marginBottom: 24 }}>
           {home.hero_title}
         </h1>
@@ -103,8 +103,6 @@ export default async function HomePage() {
           style={{
             padding: "80px 20px",
             textAlign: "center",
-            background: "rgba(255,255,255,0.9)",
-            color: "#4D4D4D",
           }}
         >
           <h2>Propósito</h2>
@@ -114,14 +112,7 @@ export default async function HomePage() {
 
       {/* ================= BENEFICIOS ================= */}
       {Array.isArray(home.benefit_item) && home.benefit_item.length > 0 && (
-        <section
-          style={{
-            padding: "80px 20px",
-            background: "rgba(255,255,255,0.95)",
-            textAlign: "center",
-            color: "#4D4D4D",
-          }}
-        >
+        <section style={{ padding: "80px 20px", textAlign: "center" }}>
           <h2 style={{ marginBottom: 40 }}>Beneficios</h2>
 
           <div
@@ -133,38 +124,29 @@ export default async function HomePage() {
               gap: 32,
             }}
           >
-            {home.benefit_item.map(
-              (item: any, index: number) => (
-                <div
-                  key={index}
-                  style={{
-                    background: "#ffffff",
-                    padding: 28,
-                    borderRadius: 16,
-                  }}
-                >
-                  <h3 style={{ marginBottom: 12 }}>{item.title}</h3>
-                  <p>{item.description}</p>
-                </div>
-              )
-            )}
+            {home.benefit_item.map((item: any, index: number) => (
+              <div
+                key={index}
+                style={{
+                  background: "rgba(255,255,255,0.15)",
+                  padding: 28,
+                  borderRadius: 16,
+                  backdropFilter: "blur(6px)",
+                }}
+              >
+                <h3 style={{ marginBottom: 12 }}>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+            ))}
           </div>
         </section>
       )}
 
       {/* ================= VISIÓN ================= */}
       {home.vision && (
-        <section
-          style={{
-            padding: "80px 20px",
-            textAlign: "center",
-            background: "rgba(0,0,0,0.35)",
-          }}
-        >
+        <section style={{ padding: "80px 20px", textAlign: "center" }}>
           <h2>Visión</h2>
-          <p style={{ maxWidth: 720, margin: "0 auto" }}>
-            {home.vision}
-          </p>
+          <p style={{ maxWidth: 720, margin: "0 auto" }}>{home.vision}</p>
         </section>
       )}
 
@@ -173,8 +155,6 @@ export default async function HomePage() {
         <section
           style={{
             padding: "80px 20px",
-            background: "rgba(0,0,0,0.45)",
-            color: "#ffffff",
             textAlign: "center",
           }}
         >
@@ -182,17 +162,19 @@ export default async function HomePage() {
 
           <ul
             style={{
-              maxWidth: 720,
-              margin: "24px auto 0",
+              maxWidth: 520,
+              margin: "32px auto 0",
               textAlign: "left",
-              lineHeight: 1.8,
+              lineHeight: 2,
+              fontSize: 18,
             }}
           >
-            {home.Valores.split("\n").map(
-              (valor: string, index: number) => (
+            {home.Valores.split("\n")
+              .map((v: string) => v.replace(/,/g, "").trim())
+              .filter(Boolean)
+              .map((valor: string, index: number) => (
                 <li key={index}>{valor}</li>
-              )
-            )}
+              ))}
           </ul>
         </section>
       )}
