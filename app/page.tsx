@@ -20,8 +20,9 @@ function renderRichText(blocks: any[]) {
         <p
           key={i}
           style={{
-            marginBottom: 16,
-            lineHeight: 1.7,
+            marginBottom: 18,
+            lineHeight: 1.75,
+            fontSize: 18,
           }}
         >
           {block.children?.map((c: any) => c.text).join("")}
@@ -47,17 +48,20 @@ export default async function HomePage() {
   return (
     <main
       style={{
-        fontFamily: "system-ui, sans-serif",
+        fontFamily:
+          "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         color: "#ffffff",
         minHeight: "100vh",
         background:
-          "linear-gradient(-45deg,#001f3f,#003f5c,#005f73,#0a9396)",
+          "linear-gradient(135deg,#005B96 0%,#004d40 40%,#00A878 70%,#005B96 100%)",
         backgroundSize: "400% 400%",
-        animation: "gradientMove 28s ease infinite",
+        animation: "gradientMove 22s ease infinite",
       }}
     >
-      {/* ===== ESTILOS Y ANIMACIONES ===== */}
+      {/* ===== FUENTE + ANIMACIONES ===== */}
       <style>{`
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
         @keyframes gradientMove {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
@@ -67,45 +71,61 @@ export default async function HomePage() {
         @keyframes panelIn {
           from {
             opacity: 0;
-            transform: translateY(60px) scale(0.96);
+            transform: translateY(48px);
           }
           to {
             opacity: 1;
-            transform: translateY(0) scale(1);
+            transform: translateY(0);
           }
         }
 
         .panel {
           max-width: 1100px;
           margin: 0 auto;
-          padding: 56px 40px;
-          border-radius: 28px;
-          box-shadow: 0 40px 100px rgba(0,0,0,0.45);
-          backdrop-filter: blur(14px);
+          padding: 56px 44px;
+          border-radius: 26px;
+          backdrop-filter: blur(12px);
+          box-shadow: 0 35px 90px rgba(0,0,0,0.4);
           opacity: 0;
-          animation: panelIn 1.6s ease forwards;
-          transition: 
-            box-shadow 0.6s ease,
-            transform 0.6s ease,
-            background 0.6s ease;
+          animation: panelIn 1.4s ease forwards;
+          transition:
+            transform 0.5s ease,
+            box-shadow 0.5s ease,
+            background 0.5s ease;
         }
 
         .panel:hover {
-          transform: translateY(-6px) scale(1.01);
-          box-shadow: 0 60px 140px rgba(0,0,0,0.65);
+          transform: translateY(-6px);
+          box-shadow: 0 55px 120px rgba(0,0,0,0.55);
+        }
+
+        h1 {
+          font-weight: 800;
+          letter-spacing: -0.02em;
+        }
+
+        h2 {
+          font-weight: 700;
+          letter-spacing: -0.015em;
+          margin-bottom: 24px;
+        }
+
+        h3 {
+          font-weight: 600;
+          margin-bottom: 10px;
         }
       `}</style>
 
       {/* ================= HERO ================= */}
       <section style={{ padding: "140px 20px", textAlign: "center" }}>
-        <h1 style={{ fontSize: "clamp(36px,6vw,64px)", marginBottom: 32 }}>
+        <h1 style={{ fontSize: "clamp(38px,6vw,64px)", marginBottom: 32 }}>
           {home.hero_title}
         </h1>
 
         <div
           className="panel"
           style={{
-            background: "rgba(0,0,0,0.45)",
+            background: "rgba(0,0,0,0.35)",
             animationDelay: "0.1s",
           }}
         >
@@ -117,8 +137,8 @@ export default async function HomePage() {
               style={{
                 display: "inline-block",
                 marginTop: 32,
-                padding: "18px 42px",
-                background: "#0a9396",
+                padding: "18px 44px",
+                background: "#00A878",
                 color: "#fff",
                 borderRadius: 14,
                 fontWeight: 700,
@@ -137,7 +157,7 @@ export default async function HomePage() {
           <div
             className="panel"
             style={{
-              background: "rgba(0,63,92,0.55)",
+              background: "rgba(0,77,64,0.45)",
               animationDelay: "0.25s",
             }}
           >
@@ -153,7 +173,7 @@ export default async function HomePage() {
           <div
             className="panel"
             style={{
-              background: "rgba(0,95,115,0.55)",
+              background: "rgba(0,168,120,0.45)",
               animationDelay: "0.4s",
             }}
           >
@@ -170,8 +190,8 @@ export default async function HomePage() {
                 <div
                   key={index}
                   style={{
-                    background: "rgba(255,255,255,0.14)",
-                    padding: 28,
+                    background: "rgba(255,255,255,0.15)",
+                    padding: 30,
                     borderRadius: 18,
                   }}
                 >
@@ -190,12 +210,12 @@ export default async function HomePage() {
           <div
             className="panel"
             style={{
-              background: "rgba(10,147,150,0.55)",
+              background: "rgba(0,91,150,0.45)",
               animationDelay: "0.55s",
             }}
           >
             <h2>Visión</h2>
-            <p style={{ maxWidth: 720, margin: "0 auto" }}>
+            <p style={{ maxWidth: 720, margin: "0 auto", fontSize: 18 }}>
               {home.vision}
             </p>
           </div>
@@ -208,7 +228,7 @@ export default async function HomePage() {
           <div
             className="panel"
             style={{
-              background: "rgba(148,210,189,0.35)",
+              background: "rgba(0,0,0,0.35)",
               animationDelay: "0.7s",
             }}
           >
