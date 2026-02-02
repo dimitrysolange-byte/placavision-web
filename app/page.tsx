@@ -1,5 +1,4 @@
 async function getHome() {
- async function getHome() {
   const res = await fetch(
     "https://placavision-cms.onrender.com/api/home?populate=*",
     { cache: "no-store" }
@@ -19,7 +18,7 @@ function renderRichText(blocks: any[]) {
     if (block.type === "paragraph") {
       return (
         <p key={i} style={{ marginBottom: 16, lineHeight: 1.6 }}>
-          {block.children?.map((c: any, j: number) => c.text).join("")}
+          {block.children?.map((c: any) => c.text).join("")}
         </p>
       );
     }
@@ -29,6 +28,8 @@ function renderRichText(blocks: any[]) {
 
 export default async function HomePage() {
   const data = await getHome();
+
+  // 🔴 ESTA ES LA LÍNEA IMPORTANTE
   const home = data?.data;
 
   if (!home) {
@@ -41,7 +42,7 @@ export default async function HomePage() {
 
   return (
     <main style={{ fontFamily: "system-ui, sans-serif", color: "#4D4D4D" }}>
-      {/* ================= HERO ================= */}
+      {/* HERO */}
       <section
         style={{
           padding: "100px 20px",
@@ -55,15 +56,14 @@ export default async function HomePage() {
           {home.hero_title}
         </h1>
 
-        <div style={{ maxWidth: 820, margin: "0 auto 32px" }}>
-          {renderRichText(home.hero_description)}
-        </div>
+        {renderRichText(home.hero_description)}
 
         {home.cta_text && home.cta_link && (
           <a
             href={home.cta_link}
             style={{
               display: "inline-block",
+              marginTop: 24,
               padding: "16px 36px",
               background: "#00A878",
               color: "#fff",
@@ -77,17 +77,15 @@ export default async function HomePage() {
         )}
       </section>
 
-      {/* ================= PROPÓSITO ================= */}
+      {/* PROPÓSITO */}
       {home.purpose && (
         <section style={{ padding: "80px 20px", textAlign: "center" }}>
-          <h2 style={{ marginBottom: 24 }}>Propósito</h2>
-          <div style={{ maxWidth: 820, margin: "0 auto" }}>
-            {renderRichText(home.purpose)}
-          </div>
+          <h2>Propósito</h2>
+          {renderRichText(home.purpose)}
         </section>
       )}
 
-      {/* ================= VISIÓN ================= */}
+      {/* VISIÓN */}
       {home.vision && (
         <section
           style={{
@@ -96,10 +94,8 @@ export default async function HomePage() {
             textAlign: "center",
           }}
         >
-          <h2 style={{ marginBottom: 24 }}>Visión</h2>
-          <p style={{ maxWidth: 720, margin: "0 auto", lineHeight: 1.6 }}>
-            {home.vision}
-          </p>
+          <h2>Visión</h2>
+          <p style={{ maxWidth: 720, margin: "0 auto" }}>{home.vision}</p>
         </section>
       )}
     </main>
