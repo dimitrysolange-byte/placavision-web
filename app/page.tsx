@@ -54,9 +54,20 @@ export default async function HomePage() {
         color: "#ffffff",
         minHeight: "100vh",
         background:
-          "linear-gradient(135deg,#005B96 0%,#004d40 40%,#00A878 70%,#005B96 100%)",
+          "linear-gradient(-45deg,#005B96,#004d40,#00A878,#003f6f)",
+        backgroundSize: "400% 400%",
+        animation: "gradientMove 20s ease infinite",
       }}
     >
+      {/* ===== CSS ANIMACIÓN DEL GRADIENTE ===== */}
+      <style>{`
+        @keyframes gradientMove {
+          0% { background-position: 0% 50%; }
+          50% { background-position: 100% 50%; }
+          100% { background-position: 0% 50%; }
+        }
+      `}</style>
+
       {/* ================= HERO ================= */}
       <section style={{ padding: "100px 20px", textAlign: "center" }}>
         <h1 style={{ fontSize: "clamp(32px,6vw,56px)", marginBottom: 24 }}>
@@ -99,12 +110,7 @@ export default async function HomePage() {
 
       {/* ================= PROPÓSITO ================= */}
       {home.purpose && (
-        <section
-          style={{
-            padding: "80px 20px",
-            textAlign: "center",
-          }}
-        >
+        <section style={{ padding: "80px 20px", textAlign: "center" }}>
           <h2>Propósito</h2>
           {renderRichText(home.purpose)}
         </section>
@@ -152,12 +158,7 @@ export default async function HomePage() {
 
       {/* ================= VALORES ================= */}
       {home.Valores && (
-        <section
-          style={{
-            padding: "80px 20px",
-            textAlign: "center",
-          }}
-        >
+        <section style={{ padding: "80px 20px", textAlign: "center" }}>
           <h2>Valores</h2>
 
           <ul
