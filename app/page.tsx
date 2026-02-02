@@ -153,21 +153,26 @@ export default async function HomePage() {
       )}
 
       {/* ================= VALORES ================= */}
-      {home.Valores && (
-        <section
-          style={{
-            padding: "80px 20px",
-            background: "#005B96",
-            color: "#fff",
-            textAlign: "center",
-          }}
-        >
-          <h2>Valores</h2>
-          <p style={{ maxWidth: 720, margin: "0 auto", lineHeight: 1.6 }}>
-            {home.Valores}
-          </p>
-        </section>
-      )}
+      
+
+{home.Valores && (
+  <section
+    style={{
+      padding: "80px 20px",
+      background: "#005B96",
+      color: "#fff",
+      textAlign: "center",
+    }}
+  >
+    <h2>Valores</h2>
+    <p style={{ maxWidth: 720, margin: "0 auto", lineHeight: 1.6 }}>
+      {home.Valores}
+    </p>
+  </section>
+)}
+
+
+
     </main>
   );
 }
