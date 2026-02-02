@@ -21,7 +21,7 @@ function renderRichText(blocks: any[]) {
           key={i}
           style={{
             marginBottom: 16,
-            lineHeight: 1.6,
+            lineHeight: 1.7,
           }}
         >
           {block.children?.map((c: any) => c.text).join("")}
@@ -51,27 +51,64 @@ export default async function HomePage() {
         color: "#ffffff",
         minHeight: "100vh",
         background:
-          "linear-gradient(-45deg,#005B96,#004d40,#00A878,#003f6f)",
+          "linear-gradient(-45deg,#001f3f,#003f5c,#005f73,#0a9396)",
         backgroundSize: "400% 400%",
-        animation: "gradientMove 20s ease infinite",
+        animation: "gradientMove 28s ease infinite",
       }}
     >
-      {/* ===== ANIMACIÓN DEL GRADIENTE ===== */}
+      {/* ===== ESTILOS Y ANIMACIONES ===== */}
       <style>{`
         @keyframes gradientMove {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
         }
+
+        @keyframes panelIn {
+          from {
+            opacity: 0;
+            transform: translateY(60px) scale(0.96);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0) scale(1);
+          }
+        }
+
+        .panel {
+          max-width: 1100px;
+          margin: 0 auto;
+          padding: 56px 40px;
+          border-radius: 28px;
+          box-shadow: 0 40px 100px rgba(0,0,0,0.45);
+          backdrop-filter: blur(14px);
+          opacity: 0;
+          animation: panelIn 1.6s ease forwards;
+          transition: 
+            box-shadow 0.6s ease,
+            transform 0.6s ease,
+            background 0.6s ease;
+        }
+
+        .panel:hover {
+          transform: translateY(-6px) scale(1.01);
+          box-shadow: 0 60px 140px rgba(0,0,0,0.65);
+        }
       `}</style>
 
       {/* ================= HERO ================= */}
-      <section style={{ padding: "120px 20px", textAlign: "center" }}>
-        <h1 style={{ fontSize: "clamp(32px,6vw,56px)", marginBottom: 24 }}>
+      <section style={{ padding: "140px 20px", textAlign: "center" }}>
+        <h1 style={{ fontSize: "clamp(36px,6vw,64px)", marginBottom: 32 }}>
           {home.hero_title}
         </h1>
 
-        <div style={panelStyle("rgba(0,0,0,0.35)")}>
+        <div
+          className="panel"
+          style={{
+            background: "rgba(0,0,0,0.45)",
+            animationDelay: "0.1s",
+          }}
+        >
           {renderRichText(home.hero_description)}
 
           {home.cta_text && home.cta_link && (
@@ -79,11 +116,11 @@ export default async function HomePage() {
               href={home.cta_link}
               style={{
                 display: "inline-block",
-                marginTop: 24,
-                padding: "16px 36px",
-                background: "#00A878",
+                marginTop: 32,
+                padding: "18px 42px",
+                background: "#0a9396",
                 color: "#fff",
-                borderRadius: 10,
+                borderRadius: 14,
                 fontWeight: 700,
                 textDecoration: "none",
               }}
@@ -96,8 +133,14 @@ export default async function HomePage() {
 
       {/* ================= PROPÓSITO ================= */}
       {home.purpose && (
-        <section style={{ padding: "100px 20px", textAlign: "center" }}>
-          <div style={panelStyle("rgba(0,77,64,0.45)")}>
+        <section style={{ padding: "120px 20px", textAlign: "center" }}>
+          <div
+            className="panel"
+            style={{
+              background: "rgba(0,63,92,0.55)",
+              animationDelay: "0.25s",
+            }}
+          >
             <h2>Propósito</h2>
             {renderRichText(home.purpose)}
           </div>
@@ -106,25 +149,30 @@ export default async function HomePage() {
 
       {/* ================= BENEFICIOS ================= */}
       {Array.isArray(home.benefit_item) && home.benefit_item.length > 0 && (
-        <section style={{ padding: "100px 20px", textAlign: "center" }}>
-          <div style={panelStyle("rgba(0,168,120,0.45)")}>
-            <h2 style={{ marginBottom: 40 }}>Beneficios</h2>
+        <section style={{ padding: "120px 20px", textAlign: "center" }}>
+          <div
+            className="panel"
+            style={{
+              background: "rgba(0,95,115,0.55)",
+              animationDelay: "0.4s",
+            }}
+          >
+            <h2 style={{ marginBottom: 48 }}>Beneficios</h2>
 
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-                gap: 32,
-                marginTop: 32,
+                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                gap: 36,
               }}
             >
               {home.benefit_item.map((item: any, index: number) => (
                 <div
                   key={index}
                   style={{
-                    background: "rgba(255,255,255,0.15)",
-                    padding: 24,
-                    borderRadius: 14,
+                    background: "rgba(255,255,255,0.14)",
+                    padding: 28,
+                    borderRadius: 18,
                   }}
                 >
                   <h3>{item.title}</h3>
@@ -138,8 +186,14 @@ export default async function HomePage() {
 
       {/* ================= VISIÓN ================= */}
       {home.vision && (
-        <section style={{ padding: "100px 20px", textAlign: "center" }}>
-          <div style={panelStyle("rgba(63,81,181,0.45)")}>
+        <section style={{ padding: "120px 20px", textAlign: "center" }}>
+          <div
+            className="panel"
+            style={{
+              background: "rgba(10,147,150,0.55)",
+              animationDelay: "0.55s",
+            }}
+          >
             <h2>Visión</h2>
             <p style={{ maxWidth: 720, margin: "0 auto" }}>
               {home.vision}
@@ -150,16 +204,22 @@ export default async function HomePage() {
 
       {/* ================= VALORES ================= */}
       {home.Valores && (
-        <section style={{ padding: "100px 20px", textAlign: "center" }}>
-          <div style={panelStyle("rgba(121,85,72,0.45)")}>
+        <section style={{ padding: "120px 20px", textAlign: "center" }}>
+          <div
+            className="panel"
+            style={{
+              background: "rgba(148,210,189,0.35)",
+              animationDelay: "0.7s",
+            }}
+          >
             <h2>Valores</h2>
 
             <ul
               style={{
                 maxWidth: 520,
-                margin: "24px auto 0",
+                margin: "28px auto 0",
                 textAlign: "left",
-                lineHeight: 2,
+                lineHeight: 2.1,
                 fontSize: 18,
               }}
             >
@@ -177,15 +237,3 @@ export default async function HomePage() {
   );
 }
 
-/* ================= PANEL STYLE ================= */
-function panelStyle(background: string) {
-  return {
-    maxWidth: 1100,
-    margin: "0 auto",
-    padding: "48px 32px",
-    background,
-    borderRadius: 24,
-    boxShadow: "0 30px 80px rgba(0,0,0,0.35)",
-    backdropFilter: "blur(10px)",
-  } as const;
-}
