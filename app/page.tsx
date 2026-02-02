@@ -1,4 +1,5 @@
 "use client";
+"use client";
 
 import { useEffect, useRef, useState } from "react";
 
@@ -39,9 +40,8 @@ function renderRichText(blocks: any[]) {
   });
 }
 
-/* ================= HOOK DE SCROLL FOCUS ================= */
 function useScrollFocus(threshold = 0.45) {
-  const ref = useRef<HTMLDivElement>(null);
+  const ref = useRef<HTMLDivElement | null>(null);
   const [active, setActive] = useState(false);
 
   useEffect(() => {
@@ -92,7 +92,6 @@ export default function HomePage() {
         animation: "gradientMove 20s ease infinite",
       }}
     >
-      {/* ===== ANIMACIÓN DEL GRADIENTE ===== */}
       <style>{`
         @keyframes gradientMove {
           0% { background-position: 0% 50%; }
@@ -101,7 +100,6 @@ export default function HomePage() {
         }
       `}</style>
 
-      {/* ================= HERO ================= */}
       <section
         ref={hero.ref}
         style={{
@@ -111,32 +109,12 @@ export default function HomePage() {
           transition: "background 0.6s ease",
         }}
       >
-        <h1 style={{ fontSize: "clamp(32px,6vw,56px)", marginBottom: 24 }}>
+        <h1 style={{ fontSize: "clamp(32px,6vw,56px)" }}>
           {home.hero_title}
         </h1>
-
         {renderRichText(home.hero_description)}
-
-        {home.cta_text && home.cta_link && (
-          <a
-            href={home.cta_link}
-            style={{
-              display: "inline-block",
-              marginTop: 24,
-              padding: "16px 36px",
-              background: "#00A878",
-              color: "#fff",
-              borderRadius: 10,
-              fontWeight: 700,
-              textDecoration: "none",
-            }}
-          >
-            {home.cta_text}
-          </a>
-        )}
       </section>
 
-      {/* ================= PROPÓSITO ================= */}
       {home.purpose && (
         <section
           ref={purpose.ref}
@@ -154,7 +132,6 @@ export default function HomePage() {
         </section>
       )}
 
-      {/* ================= BENEFICIOS ================= */}
       {Array.isArray(home.benefit_item) && (
         <section
           ref={benefits.ref}
@@ -167,36 +144,10 @@ export default function HomePage() {
             transition: "background 0.6s ease",
           }}
         >
-          <h2 style={{ marginBottom: 40 }}>Beneficios</h2>
-
-          <div
-            style={{
-              maxWidth: 1000,
-              margin: "0 auto",
-              display: "grid",
-              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
-              gap: 32,
-            }}
-          >
-            {home.benefit_item.map((item: any, i: number) => (
-              <div
-                key={i}
-                style={{
-                  background: "rgba(255,255,255,0.18)",
-                  padding: 28,
-                  borderRadius: 16,
-                  backdropFilter: "blur(6px)",
-                }}
-              >
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </div>
-            ))}
-          </div>
+          <h2>Beneficios</h2>
         </section>
       )}
 
-      {/* ================= VISIÓN ================= */}
       {home.vision && (
         <section
           ref={vision.ref}
@@ -210,11 +161,10 @@ export default function HomePage() {
           }}
         >
           <h2>Visión</h2>
-          <p style={{ maxWidth: 720, margin: "0 auto" }}>{home.vision}</p>
+          <p>{home.vision}</p>
         </section>
       )}
 
-      {/* ================= VALORES ================= */}
       {home.Valores && (
         <section
           ref={values.ref}
@@ -228,23 +178,6 @@ export default function HomePage() {
           }}
         >
           <h2>Valores</h2>
-
-          <ul
-            style={{
-              maxWidth: 520,
-              margin: "32px auto 0",
-              textAlign: "left",
-              lineHeight: 2,
-              fontSize: 18,
-            }}
-          >
-            {home.Valores.split("\n")
-              .map((v: string) => v.replace(/,/g, "").trim())
-              .filter(Boolean)
-              .map((valor: string, i: number) => (
-                <li key={i}>{valor}</li>
-              ))}
-          </ul>
         </section>
       )}
     </main>
