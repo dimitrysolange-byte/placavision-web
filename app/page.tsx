@@ -1,6 +1,6 @@
 async function getHome() {
   const res = await fetch(
-    "https://placavision-cms.onrender.com/api/home?populate=*",
+    "https://placavision-cms.onrender.com/api/home?populate=deep",
     { cache: "no-store" }
   );
 
@@ -14,19 +14,24 @@ async function getHome() {
 export default async function HomePage() {
   const data = await getHome();
 
-  if (!data?.data) {
+  // 🔐 Protección SSR
+  if (!data?.data?.attributes) {
     return (
       <main style={{ padding: 80, textAlign: "center" }}>
-        <h1>Error cargando contenido</h1>
+        <h1>Contenido no disponible</h1>
+        <p>El Home aún no ha sido configurado.</p>
       </main>
     );
   }
 
-  const home = data.data;
+  const home = data.data.attributes;
+
+  const heroText =
+    home.hero_description?.[0]?.children?.[0]?.text ?? "";
 
   return (
     <main style={{ fontFamily: "system-ui, sans-serif" }}>
-      {/* HERO */}
+      {/* ================= HERO ================= */}
       <section
         style={{
           padding: "96px 20px",
@@ -36,19 +41,19 @@ export default async function HomePage() {
             "linear-gradient(135deg,#005B96,#4D4D4D,#00A878)",
         }}
       >
-        <h1 style={{ fontSize: "clamp(30px,6vw,52px)" }}>
-          {home.heroTitle ?? "Placavisión"}
+        <h1 style={{ fontSize: "clamp(30px,6vw,52px)", fontWeight: 800 }}>
+          {home.hero_title || "Placavisión"}
         </h1>
 
-        {home.heroSubtitle && (
-          <p style={{ maxWidth: 720, margin: "24px auto" }}>
-            {home.heroSubtitle}
+        {heroText && (
+          <p style={{ maxWidth: 720, margin: "24px auto", fontSize: 18 }}>
+            {heroText}
           </p>
         )}
 
-        {home.ctaText && home.ctaUrl && (
+        {home.cta_text && home.cta_link && (
           <a
-            href={home.ctaUrl}
+            href={home.cta_link}
             style={{
               padding: "16px 36px",
               background: "#00A878",
@@ -59,13 +64,13 @@ export default async function HomePage() {
               display: "inline-block",
             }}
           >
-            {home.ctaText}
+            {home.cta_text}
           </a>
         )}
 
-        {home.heroImage?.url && (
+        {home.hero_image?.data?.attributes?.url && (
           <img
-            src={`https://placavision-cms.onrender.com${home.heroImage.url}`}
+            src={`https://placavision-cms.onrender.com${home.hero_image.data.attributes.url}`}
             alt="Hero"
             style={{
               marginTop: 48,
