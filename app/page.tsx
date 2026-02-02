@@ -1,5 +1,5 @@
 
-async function getHome() {
+aasync function getHome() {
   const res = await fetch(
     "https://placavision-cms.onrender.com/api/home?populate=*",
     { cache: "no-store" }
@@ -74,7 +74,6 @@ export default async function HomePage() {
 
         :root {
           --accent-orange: #F5A623;
-          --accent-silver: #cfd8dc;
         }
 
         @keyframes gradientMove {
@@ -145,11 +144,7 @@ export default async function HomePage() {
         }
 
         a.cta {
-          background: linear-gradient(
-            135deg,
-            #F5A623,
-            #F08A24
-          );
+          background: linear-gradient(135deg,#F5A623,#F08A24);
         }
 
         a.cta:hover {
@@ -158,37 +153,71 @@ export default async function HomePage() {
       `}</style>
 
       {/* ================= HERO ================= */}
-      <section style={{ padding: "140px 20px", textAlign: "center" }}>
-        <h1 style={{ fontSize: "clamp(38px,6vw,64px)", marginBottom: 32 }}>
-          {home.hero_title}
-        </h1>
-
+      <section
+        style={{
+          padding: "160px 20px",
+          textAlign: "center",
+          position: "relative",
+          overflow: "hidden",
+        }}
+      >
+        {/* Fondo imagen + overlay */}
         <div
-          className="panel"
           style={{
-            background: "rgba(0,0,0,0.35)",
-            animationDelay: "0.1s",
+            position: "absolute",
+            inset: 0,
+            backgroundImage: `
+              linear-gradient(
+                rgba(0,0,0,0.45),
+                rgba(0,0,0,0.7)
+              ),
+              url("/hero-bg.jpg")
+            `,
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+            backgroundRepeat: "no-repeat",
+            zIndex: 0,
           }}
-        >
-          {renderRichText(home.hero_description)}
+        />
 
-          {home.cta_text && home.cta_link && (
-            <a
-              href={home.cta_link}
-              className="cta"
-              style={{
-                display: "inline-block",
-                marginTop: 32,
-                padding: "18px 44px",
-                color: "#fff",
-                borderRadius: 14,
-                fontWeight: 700,
-                textDecoration: "none",
-              }}
-            >
-              {home.cta_text}
-            </a>
-          )}
+        {/* Contenido */}
+        <div style={{ position: "relative", zIndex: 1 }}>
+          <h1
+            style={{
+              fontSize: "clamp(38px,6vw,64px)",
+              marginBottom: 32,
+            }}
+          >
+            {home.hero_title}
+          </h1>
+
+          <div
+            className="panel"
+            style={{
+              background: "rgba(0,0,0,0.35)",
+              animationDelay: "0.1s",
+            }}
+          >
+            {renderRichText(home.hero_description)}
+
+            {home.cta_text && home.cta_link && (
+              <a
+                href={home.cta_link}
+                className="cta"
+                style={{
+                  display: "inline-block",
+                  marginTop: 32,
+                  padding: "18px 44px",
+                  color: "#fff",
+                  borderRadius: 14,
+                  fontWeight: 700,
+                  textDecoration: "none",
+                }}
+              >
+                {home.cta_text}
+              </a>
+            )}
+          </div>
         </div>
       </section>
 
@@ -290,15 +319,18 @@ export default async function HomePage() {
                 .filter(Boolean)
                 .map((valor: string, index: number) => (
                   <li key={index}>
-                    <span style={{ color: "var(--accent-orange)" }}>
-                      ●{" "}
-                    </span>
+                    <span style={{ color: "var(--accent-orange)" }}>● </span>
                     {valor}
                   </li>
                 ))}
             </ul>
           </div>
         </section>
+      )}
+    </main>
+  );
+}
+
       )}
     </main>
   );
