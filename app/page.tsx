@@ -1,3 +1,4 @@
+
 async function getHome() {
   const res = await fetch(
     "https://placavision-cms.onrender.com/api/home?populate=*",
@@ -52,18 +53,28 @@ export default async function HomePage() {
           "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         color: "#ffffff",
         minHeight: "100vh",
-        background:
-          "linear-gradient(135deg,#005B96 0%,#004d40 40%,#00A878 70%,#005B96 100%)",
-        backgroundSize: "400% 400%",
-        animation: "gradientMove 22s ease infinite",
+        background: `
+          linear-gradient(
+            135deg,
+            #005B96 0%,
+            #004d40 25%,
+            #00A878 45%,
+            #F5A623 60%,
+            #cfd8dc 75%,
+            #005B96 100%
+          )
+        `,
+        backgroundSize: "500% 500%",
+        animation: "gradientMove 26s ease infinite",
       }}
     >
-      {/* ===== FUENTE + ESTILOS ===== */}
+      {/* ===== FUENTE + ANIMACIONES ===== */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
         :root {
           --accent-orange: #F5A623;
+          --accent-silver: #cfd8dc;
         }
 
         @keyframes gradientMove {
@@ -278,10 +289,7 @@ export default async function HomePage() {
                 .map((v: string) => v.replace(/,/g, "").trim())
                 .filter(Boolean)
                 .map((valor: string, index: number) => (
-                  <li
-                    key={index}
-                    style={{ color: "#fff", position: "relative" }}
-                  >
+                  <li key={index}>
                     <span style={{ color: "var(--accent-orange)" }}>
                       ●{" "}
                     </span>
