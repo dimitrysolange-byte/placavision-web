@@ -29,7 +29,7 @@ function renderRichText(blocks: any[]) {
 export default async function HomePage() {
   const data = await getHome();
 
-  // 🔴 ESTA ES LA LÍNEA IMPORTANTE
+  // 🔴 LÍNEA QUE CONFIRMASTE QUE FUNCIONA
   const home = data?.data;
 
   if (!home) {
@@ -42,7 +42,7 @@ export default async function HomePage() {
 
   return (
     <main style={{ fontFamily: "system-ui, sans-serif", color: "#4D4D4D" }}>
-      {/* HERO */}
+      {/* ================= HERO ================= */}
       <section
         style={{
           padding: "100px 20px",
@@ -75,9 +75,22 @@ export default async function HomePage() {
             {home.cta_text}
           </a>
         )}
+
+        {home.hero_image?.url && (
+          <img
+            src={`https://placavision-cms.onrender.com${home.hero_image.url}`}
+            alt="Hero"
+            style={{
+              marginTop: 48,
+              maxWidth: 420,
+              width: "100%",
+              borderRadius: 20,
+            }}
+          />
+        )}
       </section>
 
-      {/* PROPÓSITO */}
+      {/* ================= PROPÓSITO ================= */}
       {home.purpose && (
         <section style={{ padding: "80px 20px", textAlign: "center" }}>
           <h2>Propósito</h2>
@@ -85,8 +98,8 @@ export default async function HomePage() {
         </section>
       )}
 
-      {/* VISIÓN */}
-      {home.vision && (
+      {/* ================= BENEFICIOS ================= */}
+      {Array.isArray(home.benefit_item) && home.benefit_item.length > 0 && (
         <section
           style={{
             padding: "80px 20px",
@@ -94,8 +107,65 @@ export default async function HomePage() {
             textAlign: "center",
           }}
         >
+          <h2 style={{ marginBottom: 40 }}>Beneficios</h2>
+
+          <div
+            style={{
+              maxWidth: 1000,
+              margin: "0 auto",
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit, minmax(220px, 1fr))",
+              gap: 32,
+            }}
+          >
+            {home.benefit_item.map(
+              (item: any, index: number) => (
+                <div
+                  key={index}
+                  style={{
+                    background: "#fff",
+                    padding: 28,
+                    borderRadius: 16,
+                  }}
+                >
+                  <h3 style={{ marginBottom: 12 }}>{item.title}</h3>
+                  <p>{item.description}</p>
+                </div>
+              )
+            )}
+          </div>
+        </section>
+      )}
+
+      {/* ================= VISIÓN ================= */}
+      {home.vision && (
+        <section
+          style={{
+            padding: "80px 20px",
+            textAlign: "center",
+          }}
+        >
           <h2>Visión</h2>
-          <p style={{ maxWidth: 720, margin: "0 auto" }}>{home.vision}</p>
+          <p style={{ maxWidth: 720, margin: "0 auto" }}>
+            {home.vision}
+          </p>
+        </section>
+      )}
+
+      {/* ================= VALORES ================= */}
+      {home.Valores && (
+        <section
+          style={{
+            padding: "80px 20px",
+            background: "#005B96",
+            color: "#fff",
+            textAlign: "center",
+          }}
+        >
+          <h2>Valores</h2>
+          <p style={{ maxWidth: 720, margin: "0 auto", lineHeight: 1.6 }}>
+            {home.Valores}
+          </p>
         </section>
       )}
     </main>
