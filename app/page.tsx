@@ -58,9 +58,13 @@ export default async function HomePage() {
         animation: "gradientMove 22s ease infinite",
       }}
     >
-      {/* ===== FUENTE + ANIMACIONES ===== */}
+      {/* ===== FUENTE + ESTILOS ===== */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        :root {
+          --accent-orange: #F5A623;
+        }
 
         @keyframes gradientMove {
           0% { background-position: 0% 50%; }
@@ -86,17 +90,19 @@ export default async function HomePage() {
           border-radius: 26px;
           backdrop-filter: blur(12px);
           box-shadow: 0 35px 90px rgba(0,0,0,0.4);
+          border: 1px solid rgba(245,166,35,0.15);
           opacity: 0;
           animation: panelIn 1.4s ease forwards;
           transition:
             transform 0.5s ease,
             box-shadow 0.5s ease,
-            background 0.5s ease;
+            border 0.5s ease;
         }
 
         .panel:hover {
           transform: translateY(-6px);
           box-shadow: 0 55px 120px rgba(0,0,0,0.55);
+          border: 1px solid rgba(245,166,35,0.45);
         }
 
         h1 {
@@ -108,11 +114,35 @@ export default async function HomePage() {
           font-weight: 700;
           letter-spacing: -0.015em;
           margin-bottom: 24px;
+          position: relative;
+        }
+
+        h2::after {
+          content: "";
+          display: block;
+          width: 56px;
+          height: 4px;
+          margin: 14px auto 0;
+          background: var(--accent-orange);
+          border-radius: 4px;
+          opacity: 0.85;
         }
 
         h3 {
           font-weight: 600;
           margin-bottom: 10px;
+        }
+
+        a.cta {
+          background: linear-gradient(
+            135deg,
+            #F5A623,
+            #F08A24
+          );
+        }
+
+        a.cta:hover {
+          filter: brightness(1.1);
         }
       `}</style>
 
@@ -134,11 +164,11 @@ export default async function HomePage() {
           {home.cta_text && home.cta_link && (
             <a
               href={home.cta_link}
+              className="cta"
               style={{
                 display: "inline-block",
                 marginTop: 32,
                 padding: "18px 44px",
-                background: "#00A878",
                 color: "#fff",
                 borderRadius: 14,
                 fontWeight: 700,
@@ -193,6 +223,7 @@ export default async function HomePage() {
                     background: "rgba(255,255,255,0.15)",
                     padding: 30,
                     borderRadius: 18,
+                    borderLeft: "4px solid var(--accent-orange)",
                   }}
                 >
                   <h3>{item.title}</h3>
@@ -247,7 +278,15 @@ export default async function HomePage() {
                 .map((v: string) => v.replace(/,/g, "").trim())
                 .filter(Boolean)
                 .map((valor: string, index: number) => (
-                  <li key={index}>{valor}</li>
+                  <li
+                    key={index}
+                    style={{ color: "#fff", position: "relative" }}
+                  >
+                    <span style={{ color: "var(--accent-orange)" }}>
+                      ●{" "}
+                    </span>
+                    {valor}
+                  </li>
                 ))}
             </ul>
           </div>
@@ -256,4 +295,3 @@ export default async function HomePage() {
     </main>
   );
 }
-
