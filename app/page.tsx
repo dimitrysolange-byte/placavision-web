@@ -1,3 +1,7 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
+
 async function getHome() {
   const res = await fetch(
     "https://placavision-cms.onrender.com/api/home?populate=*",
@@ -35,17 +39,46 @@ function renderRichText(blocks: any[]) {
   });
 }
 
-export default async function HomePage() {
-  const data = await getHome();
-  const home = data?.data;
+/* ================= HOOK DE SCROLL FOCUS ================= */
+function useScrollFocus(threshold = 0.45) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [active, setActive] = useState(false);
+
+  useEffect(() => {
+    if (!ref.current) return;
+
+    const observer = new IntersectionObserver(
+      ([entry]) => setActive(entry.isIntersecting),
+      { threshold }
+    );
+
+    observer.observe(ref.current);
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, active };
+}
+
+export default function HomePage() {
+  const [home, setHome] = useState<any>(null);
+
+  useEffect(() => {
+    getHome().then((data) => setHome(data?.data));
+  }, []);
 
   if (!home) {
     return (
-      <main style={{ padding: 80, textAlign: "center" }}>
-        <h1>Contenido no disponible</h1>
+      <main style={{ padding: 80, textAlign: "center", color: "#fff" }}>
+        Cargando…
       </main>
     );
   }
+
+  const hero = useScrollFocus();
+  const purpose = useScrollFocus();
+  const benefits = useScrollFocus();
+  const vision = useScrollFocus();
+  const values = useScrollFocus();
 
   return (
     <main
@@ -59,7 +92,7 @@ export default async function HomePage() {
         animation: "gradientMove 20s ease infinite",
       }}
     >
-      {/* ===== CSS ANIMACIÓN DEL GRADIENTE ===== */}
+      {/* ===== ANIMACIÓN DEL GRADIENTE ===== */}
       <style>{`
         @keyframes gradientMove {
           0% { background-position: 0% 50%; }
@@ -69,7 +102,15 @@ export default async function HomePage() {
       `}</style>
 
       {/* ================= HERO ================= */}
-      <section style={{ padding: "100px 20px", textAlign: "center" }}>
+      <section
+        ref={hero.ref}
+        style={{
+          padding: "120px 20px",
+          textAlign: "center",
+          background: hero.active ? "rgba(0,91,150,0.55)" : "transparent",
+          transition: "background 0.6s ease",
+        }}
+      >
         <h1 style={{ fontSize: "clamp(32px,6vw,56px)", marginBottom: 24 }}>
           {home.hero_title}
         </h1>
@@ -93,32 +134,39 @@ export default async function HomePage() {
             {home.cta_text}
           </a>
         )}
-
-        {home.hero_image?.url && (
-          <img
-            src={`https://placavision-cms.onrender.com${home.hero_image.url}`}
-            alt="Hero"
-            style={{
-              marginTop: 48,
-              maxWidth: 420,
-              width: "100%",
-              borderRadius: 20,
-            }}
-          />
-        )}
       </section>
 
       {/* ================= PROPÓSITO ================= */}
       {home.purpose && (
-        <section style={{ padding: "80px 20px", textAlign: "center" }}>
+        <section
+          ref={purpose.ref}
+          style={{
+            padding: "100px 20px",
+            textAlign: "center",
+            background: purpose.active
+              ? "rgba(0,77,64,0.55)"
+              : "transparent",
+            transition: "background 0.6s ease",
+          }}
+        >
           <h2>Propósito</h2>
           {renderRichText(home.purpose)}
         </section>
       )}
 
       {/* ================= BENEFICIOS ================= */}
-      {Array.isArray(home.benefit_item) && home.benefit_item.length > 0 && (
-        <section style={{ padding: "80px 20px", textAlign: "center" }}>
+      {Array.isArray(home.benefit_item) && (
+        <section
+          ref={benefits.ref}
+          style={{
+            padding: "100px 20px",
+            textAlign: "center",
+            background: benefits.active
+              ? "rgba(0,168,120,0.55)"
+              : "transparent",
+            transition: "background 0.6s ease",
+          }}
+        >
           <h2 style={{ marginBottom: 40 }}>Beneficios</h2>
 
           <div
@@ -130,17 +178,17 @@ export default async function HomePage() {
               gap: 32,
             }}
           >
-            {home.benefit_item.map((item: any, index: number) => (
+            {home.benefit_item.map((item: any, i: number) => (
               <div
-                key={index}
+                key={i}
                 style={{
-                  background: "rgba(255,255,255,0.15)",
+                  background: "rgba(255,255,255,0.18)",
                   padding: 28,
                   borderRadius: 16,
                   backdropFilter: "blur(6px)",
                 }}
               >
-                <h3 style={{ marginBottom: 12 }}>{item.title}</h3>
+                <h3>{item.title}</h3>
                 <p>{item.description}</p>
               </div>
             ))}
@@ -150,7 +198,17 @@ export default async function HomePage() {
 
       {/* ================= VISIÓN ================= */}
       {home.vision && (
-        <section style={{ padding: "80px 20px", textAlign: "center" }}>
+        <section
+          ref={vision.ref}
+          style={{
+            padding: "100px 20px",
+            textAlign: "center",
+            background: vision.active
+              ? "rgba(63,81,181,0.55)"
+              : "transparent",
+            transition: "background 0.6s ease",
+          }}
+        >
           <h2>Visión</h2>
           <p style={{ maxWidth: 720, margin: "0 auto" }}>{home.vision}</p>
         </section>
@@ -158,7 +216,17 @@ export default async function HomePage() {
 
       {/* ================= VALORES ================= */}
       {home.Valores && (
-        <section style={{ padding: "80px 20px", textAlign: "center" }}>
+        <section
+          ref={values.ref}
+          style={{
+            padding: "100px 20px",
+            textAlign: "center",
+            background: values.active
+              ? "rgba(121,85,72,0.55)"
+              : "transparent",
+            transition: "background 0.6s ease",
+          }}
+        >
           <h2>Valores</h2>
 
           <ul
@@ -173,8 +241,8 @@ export default async function HomePage() {
             {home.Valores.split("\n")
               .map((v: string) => v.replace(/,/g, "").trim())
               .filter(Boolean)
-              .map((valor: string, index: number) => (
-                <li key={index}>{valor}</li>
+              .map((valor: string, i: number) => (
+                <li key={i}>{valor}</li>
               ))}
           </ul>
         </section>
