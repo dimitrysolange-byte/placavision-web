@@ -41,13 +41,20 @@ export default async function HomePage() {
   }
 
   return (
-    <main style={{ fontFamily: "system-ui, sans-serif", color: "#4D4D4D" }}>
+    <main
+      style={{
+        fontFamily: "system-ui, sans-serif",
+        color: "#ffffff",
+        minHeight: "100vh",
+        background:
+          "linear-gradient(135deg,#005B96 0%,#4D4D4D 40%,#00A878 70%,#005B96 100%)",
+      }}
+    >
       {/* ================= HERO ================= */}
       <section
         style={{
           padding: "100px 20px",
           textAlign: "center",
-          color: "#fff",
           background:
             "linear-gradient(135deg,#005B96 0%,#4D4D4D 50%,#00A878 100%)",
         }}
@@ -92,7 +99,14 @@ export default async function HomePage() {
 
       {/* ================= PROPÓSITO ================= */}
       {home.purpose && (
-        <section style={{ padding: "80px 20px", textAlign: "center" }}>
+        <section
+          style={{
+            padding: "80px 20px",
+            textAlign: "center",
+            background: "rgba(255,255,255,0.9)",
+            color: "#4D4D4D",
+          }}
+        >
           <h2>Propósito</h2>
           {renderRichText(home.purpose)}
         </section>
@@ -103,8 +117,9 @@ export default async function HomePage() {
         <section
           style={{
             padding: "80px 20px",
-            background: "#f7f7f7",
+            background: "rgba(255,255,255,0.95)",
             textAlign: "center",
+            color: "#4D4D4D",
           }}
         >
           <h2 style={{ marginBottom: 40 }}>Beneficios</h2>
@@ -123,7 +138,7 @@ export default async function HomePage() {
                 <div
                   key={index}
                   style={{
-                    background: "#fff",
+                    background: "#ffffff",
                     padding: 28,
                     borderRadius: 16,
                   }}
@@ -143,6 +158,7 @@ export default async function HomePage() {
           style={{
             padding: "80px 20px",
             textAlign: "center",
+            background: "rgba(0,0,0,0.35)",
           }}
         >
           <h2>Visión</h2>
@@ -153,26 +169,33 @@ export default async function HomePage() {
       )}
 
       {/* ================= VALORES ================= */}
-      
+      {home.Valores && (
+        <section
+          style={{
+            padding: "80px 20px",
+            background: "rgba(0,0,0,0.45)",
+            color: "#ffffff",
+            textAlign: "center",
+          }}
+        >
+          <h2>Valores</h2>
 
-{home.Valores && (
-  <section
-    style={{
-      padding: "80px 20px",
-      background: "#005B96",
-      color: "#fff",
-      textAlign: "center",
-    }}
-  >
-    <h2>Valores</h2>
-    <p style={{ maxWidth: 720, margin: "0 auto", lineHeight: 1.6 }}>
-      {home.Valores}
-    </p>
-  </section>
-)}
-
-
-
+          <ul
+            style={{
+              maxWidth: 720,
+              margin: "24px auto 0",
+              textAlign: "left",
+              lineHeight: 1.8,
+            }}
+          >
+            {home.Valores.split("\n").map(
+              (valor: string, index: number) => (
+                <li key={index}>{valor}</li>
+              )
+            )}
+          </ul>
+        </section>
+      )}
     </main>
   );
 }
