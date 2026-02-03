@@ -52,6 +52,7 @@ export default async function HomePage() {
           "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         color: "#ffffff",
         minHeight: "100vh",
+        scrollBehavior: "smooth",
         background: `
           linear-gradient(
             135deg,
@@ -69,6 +70,10 @@ export default async function HomePage() {
     >
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
+
+        html {
+          scroll-behavior: smooth;
+        }
 
         @keyframes gradientMove {
           0% { background-position: 0% 50%; }
@@ -90,10 +95,61 @@ export default async function HomePage() {
         h1 { font-weight: 800; }
         h2 { font-weight: 700; margin-bottom: 24px; }
         h3 { font-weight: 600; }
+
+        /* ===== NAVBAR ===== */
+        .navbar {
+          position: fixed;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 72px;
+          background: rgba(0,0,0,0.65);
+          backdrop-filter: blur(10px);
+          z-index: 1000;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 40px;
+          border-bottom: 1px solid rgba(245,166,35,0.25);
+        }
+
+        .navbar a {
+          color: #ffffff;
+          text-decoration: none;
+          font-weight: 600;
+          font-size: 16px;
+          position: relative;
+        }
+
+        .navbar a::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: -6px;
+          width: 0;
+          height: 2px;
+          background: #F5A623;
+          transition: width 0.3s ease;
+        }
+
+        .navbar a:hover::after {
+          width: 100%;
+        }
+
+        /* offset para scroll con navbar fija */
+        section {
+          scroll-margin-top: 90px;
+        }
       `}</style>
 
+      {/* ================= NAVBAR ================= */}
+      <nav className="navbar">
+        <a href="#home">Home</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+
       {/* ================= HERO ================= */}
-      <section style={{ padding: "140px 20px", textAlign: "center" }}>
+      <section id="home" style={{ padding: "180px 20px 140px", textAlign: "center" }}>
         <h1 style={{ fontSize: "clamp(38px,6vw,64px)", marginBottom: 32 }}>
           {home.hero_title}
         </h1>
@@ -183,10 +239,11 @@ export default async function HomePage() {
       {/* ================= FOOTER / CONTACTO ================= */}
       {home.Contact1 && (
         <footer
+          id="contacto"
           style={{
             width: "100%",
             background: "#000",
-            padding: "120px 20px",
+            padding: "140px 20px",
             marginTop: 160,
           }}
         >
@@ -240,3 +297,4 @@ export default async function HomePage() {
     </main>
   );
 }
+
