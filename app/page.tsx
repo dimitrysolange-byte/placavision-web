@@ -1,4 +1,3 @@
-
 async function getHome() {
   const res = await fetch(
     "https://placavision-cms.onrender.com/api/home?populate=*",
@@ -91,31 +90,6 @@ export default async function HomePage() {
         h1 { font-weight: 800; }
         h2 { font-weight: 700; margin-bottom: 24px; }
         h3 { font-weight: 600; }
-
-        .footer {
-          margin-top: 140px;
-          padding: 100px 20px 120px;
-          background: linear-gradient(
-            180deg,
-            rgba(0,0,0,0) 0%,
-            rgba(0,0,0,0.6) 100%
-          );
-        }
-
-        .contact-item {
-          margin: 12px 0;
-          font-size: 18px;
-        }
-
-        .contact-item a {
-          color: #F5A623;
-          text-decoration: none;
-          font-weight: 500;
-        }
-
-        .contact-item a:hover {
-          text-decoration: underline;
-        }
       `}</style>
 
       {/* ================= HERO ================= */}
@@ -208,38 +182,56 @@ export default async function HomePage() {
 
       {/* ================= FOOTER / CONTACTO ================= */}
       {home.Contact1 && (
-        <footer className="footer">
-          <div className="panel" style={{ maxWidth: 900 }}>
+        <footer
+          style={{
+            width: "100%",
+            background: "#000",
+            padding: "120px 20px",
+            marginTop: 160,
+          }}
+        >
+          <div
+            style={{
+              maxWidth: 900,
+              margin: "0 auto",
+              padding: "64px 48px",
+              borderRadius: 24,
+              background: "#0d0d0d",
+              boxShadow: "0 40px 100px rgba(0,0,0,0.8)",
+              border: "1px solid rgba(245,166,35,0.25)",
+              textAlign: "center",
+            }}
+          >
             <h2>{home.Contact1.title}</h2>
 
             {renderRichText(home.Contact1.description)}
 
-            <div style={{ marginTop: 32 }}>
+            <div style={{ marginTop: 36, fontSize: 18, lineHeight: 2 }}>
               {home.Contact1.email && (
-                <div className="contact-item">
+                <p>
                   📧{" "}
-                  <a href={`mailto:${home.Contact1.email}`}>
+                  <a
+                    href={`mailto:${home.Contact1.email}`}
+                    style={{ color: "#F5A623", textDecoration: "none" }}
+                  >
                     {home.Contact1.email}
                   </a>
-                </div>
+                </p>
               )}
 
-              {home.Contact1.phone && (
-                <div className="contact-item">
-                  📞 {home.Contact1.phone}
-                </div>
-              )}
+              {home.Contact1.phone && <p>📞 {home.Contact1.phone}</p>}
 
               {home.Contact1.whatsapp && (
-                <div className="contact-item">
+                <p>
                   💬{" "}
                   <a
                     href={`https://wa.me/${home.Contact1.whatsapp}`}
                     target="_blank"
+                    style={{ color: "#25D366", textDecoration: "none" }}
                   >
                     WhatsApp
                   </a>
-                </div>
+                </p>
               )}
             </div>
           </div>
