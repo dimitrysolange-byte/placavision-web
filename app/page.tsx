@@ -1,5 +1,5 @@
 
-aasync function getHome() {
+async function getHome() {
   const res = await fetch(
     "https://placavision-cms.onrender.com/api/home?populate=*",
     { cache: "no-store" }
@@ -68,29 +68,13 @@ export default async function HomePage() {
         animation: "gradientMove 26s ease infinite",
       }}
     >
-      {/* ===== FUENTE + ANIMACIONES ===== */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-        :root {
-          --accent-orange: #F5A623;
-        }
 
         @keyframes gradientMove {
           0% { background-position: 0% 50%; }
           50% { background-position: 100% 50%; }
           100% { background-position: 0% 50%; }
-        }
-
-        @keyframes panelIn {
-          from {
-            opacity: 0;
-            transform: translateY(48px);
-          }
-          to {
-            opacity: 1;
-            transform: translateY(0);
-          }
         }
 
         .panel {
@@ -99,138 +83,56 @@ export default async function HomePage() {
           padding: 56px 44px;
           border-radius: 26px;
           backdrop-filter: blur(12px);
-          box-shadow: 0 35px 90px rgba(0,0,0,0.4);
-          border: 1px solid rgba(245,166,35,0.15);
-          opacity: 0;
-          animation: panelIn 1.4s ease forwards;
-          transition:
-            transform 0.5s ease,
-            box-shadow 0.5s ease,
-            border 0.5s ease;
+          background: rgba(0,0,0,0.45);
+          box-shadow: 0 35px 90px rgba(0,0,0,0.45);
+          border: 1px solid rgba(245,166,35,0.25);
         }
 
-        .panel:hover {
-          transform: translateY(-6px);
-          box-shadow: 0 55px 120px rgba(0,0,0,0.55);
-          border: 1px solid rgba(245,166,35,0.45);
+        h1 { font-weight: 800; }
+        h2 { font-weight: 700; margin-bottom: 24px; }
+        h3 { font-weight: 600; }
+
+        .footer {
+          margin-top: 140px;
+          padding: 100px 20px 120px;
+          background: linear-gradient(
+            180deg,
+            rgba(0,0,0,0) 0%,
+            rgba(0,0,0,0.6) 100%
+          );
         }
 
-        h1 {
-          font-weight: 800;
-          letter-spacing: -0.02em;
+        .contact-item {
+          margin: 12px 0;
+          font-size: 18px;
         }
 
-        h2 {
-          font-weight: 700;
-          letter-spacing: -0.015em;
-          margin-bottom: 24px;
-          position: relative;
+        .contact-item a {
+          color: #F5A623;
+          text-decoration: none;
+          font-weight: 500;
         }
 
-        h2::after {
-          content: "";
-          display: block;
-          width: 56px;
-          height: 4px;
-          margin: 14px auto 0;
-          background: var(--accent-orange);
-          border-radius: 4px;
-          opacity: 0.85;
-        }
-
-        h3 {
-          font-weight: 600;
-          margin-bottom: 10px;
-        }
-
-        a.cta {
-          background: linear-gradient(135deg,#F5A623,#F08A24);
-        }
-
-        a.cta:hover {
-          filter: brightness(1.1);
+        .contact-item a:hover {
+          text-decoration: underline;
         }
       `}</style>
 
       {/* ================= HERO ================= */}
-      <section
-        style={{
-          padding: "160px 20px",
-          textAlign: "center",
-          position: "relative",
-          overflow: "hidden",
-        }}
-      >
-        {/* Fondo imagen + overlay */}
-        <div
-          style={{
-            position: "absolute",
-            inset: 0,
-            backgroundImage: `
-              linear-gradient(
-                rgba(0,0,0,0.45),
-                rgba(0,0,0,0.7)
-              ),
-              url("/hero-bg.jpg")
-            `,
-            backgroundSize: "cover",
-            backgroundPosition: "center",
-            backgroundRepeat: "no-repeat",
-            zIndex: 0,
-          }}
-        />
+      <section style={{ padding: "140px 20px", textAlign: "center" }}>
+        <h1 style={{ fontSize: "clamp(38px,6vw,64px)", marginBottom: 32 }}>
+          {home.hero_title}
+        </h1>
 
-        {/* Contenido */}
-        <div style={{ position: "relative", zIndex: 1 }}>
-          <h1
-            style={{
-              fontSize: "clamp(38px,6vw,64px)",
-              marginBottom: 32,
-            }}
-          >
-            {home.hero_title}
-          </h1>
-
-          <div
-            className="panel"
-            style={{
-              background: "rgba(0,0,0,0.35)",
-              animationDelay: "0.1s",
-            }}
-          >
-            {renderRichText(home.hero_description)}
-
-            {home.cta_text && home.cta_link && (
-              <a
-                href={home.cta_link}
-                className="cta"
-                style={{
-                  display: "inline-block",
-                  marginTop: 32,
-                  padding: "18px 44px",
-                  color: "#fff",
-                  borderRadius: 14,
-                  fontWeight: 700,
-                  textDecoration: "none",
-                }}
-              >
-                {home.cta_text}
-              </a>
-            )}
-          </div>
+        <div className="panel">
+          {renderRichText(home.hero_description)}
         </div>
       </section>
 
       {/* ================= PROPÓSITO ================= */}
       {home.purpose && (
         <section style={{ padding: "120px 20px", textAlign: "center" }}>
-          <div
-            className="panel"
-            style={{
-              background: "rgba(0,77,64,0.45)",
-              animationDelay: "0.25s",
-            }}
-          >
+          <div className="panel">
             <h2>Propósito</h2>
             {renderRichText(home.purpose)}
           </div>
@@ -238,32 +140,25 @@ export default async function HomePage() {
       )}
 
       {/* ================= BENEFICIOS ================= */}
-      {Array.isArray(home.benefit_item) && home.benefit_item.length > 0 && (
+      {Array.isArray(home.benefit_item) && (
         <section style={{ padding: "120px 20px", textAlign: "center" }}>
-          <div
-            className="panel"
-            style={{
-              background: "rgba(0,168,120,0.45)",
-              animationDelay: "0.4s",
-            }}
-          >
-            <h2 style={{ marginBottom: 48 }}>Beneficios</h2>
+          <div className="panel">
+            <h2>Beneficios</h2>
 
             <div
               style={{
                 display: "grid",
                 gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-                gap: 36,
+                gap: 32,
               }}
             >
-              {home.benefit_item.map((item: any, index: number) => (
+              {home.benefit_item.map((item: any, i: number) => (
                 <div
-                  key={index}
+                  key={i}
                   style={{
                     background: "rgba(255,255,255,0.15)",
-                    padding: 30,
+                    padding: 28,
                     borderRadius: 18,
-                    borderLeft: "4px solid var(--accent-orange)",
                   }}
                 >
                   <h3>{item.title}</h3>
@@ -278,13 +173,7 @@ export default async function HomePage() {
       {/* ================= VISIÓN ================= */}
       {home.vision && (
         <section style={{ padding: "120px 20px", textAlign: "center" }}>
-          <div
-            className="panel"
-            style={{
-              background: "rgba(0,91,150,0.45)",
-              animationDelay: "0.55s",
-            }}
-          >
+          <div className="panel">
             <h2>Visión</h2>
             <p style={{ maxWidth: 720, margin: "0 auto", fontSize: 18 }}>
               {home.vision}
@@ -296,41 +185,65 @@ export default async function HomePage() {
       {/* ================= VALORES ================= */}
       {home.Valores && (
         <section style={{ padding: "120px 20px", textAlign: "center" }}>
-          <div
-            className="panel"
-            style={{
-              background: "rgba(0,0,0,0.35)",
-              animationDelay: "0.7s",
-            }}
-          >
+          <div className="panel">
             <h2>Valores</h2>
-
             <ul
               style={{
                 maxWidth: 520,
-                margin: "28px auto 0",
+                margin: "24px auto 0",
                 textAlign: "left",
-                lineHeight: 2.1,
+                lineHeight: 2,
                 fontSize: 18,
               }}
             >
               {home.Valores.split("\n")
-                .map((v: string) => v.replace(/,/g, "").trim())
                 .filter(Boolean)
-                .map((valor: string, index: number) => (
-                  <li key={index}>
-                    <span style={{ color: "var(--accent-orange)" }}>● </span>
-                    {valor}
-                  </li>
+                .map((v: string, i: number) => (
+                  <li key={i}>● {v}</li>
                 ))}
             </ul>
           </div>
         </section>
       )}
-    </main>
-  );
-}
 
+      {/* ================= FOOTER / CONTACTO ================= */}
+      {home.Contact1 && (
+        <footer className="footer">
+          <div className="panel" style={{ maxWidth: 900 }}>
+            <h2>{home.Contact1.title}</h2>
+
+            {renderRichText(home.Contact1.description)}
+
+            <div style={{ marginTop: 32 }}>
+              {home.Contact1.email && (
+                <div className="contact-item">
+                  📧{" "}
+                  <a href={`mailto:${home.Contact1.email}`}>
+                    {home.Contact1.email}
+                  </a>
+                </div>
+              )}
+
+              {home.Contact1.phone && (
+                <div className="contact-item">
+                  📞 {home.Contact1.phone}
+                </div>
+              )}
+
+              {home.Contact1.whatsapp && (
+                <div className="contact-item">
+                  💬{" "}
+                  <a
+                    href={`https://wa.me/${home.Contact1.whatsapp}`}
+                    target="_blank"
+                  >
+                    WhatsApp
+                  </a>
+                </div>
+              )}
+            </div>
+          </div>
+        </footer>
       )}
     </main>
   );
