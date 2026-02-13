@@ -41,10 +41,9 @@ function SurveyForm() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    user_type: "",
+    Tipo_de_usuario: "",
     system_usefulness: "",
     usage_environment: [],
-    main_feature: "",
     interested_in_trial: false,
     budget_range: "",
     comments: "",
@@ -97,7 +96,7 @@ function SurveyForm() {
       <input name="email" placeholder="Correo" onChange={handleChange} />
       <br /><br />
 
-      <select name="user_type" onChange={handleChange}>
+      <select name="Tipo_de_usuario" onChange={handleChange}>
         <option value="">Tipo de usuario</option>
         <option value="empresa_seguridad">Empresa de seguridad</option>
         <option value="gobierno_policia">Gobierno / Policía</option>
@@ -150,28 +149,7 @@ export default function HomePage() {
   }
 
   return (
-    <main
-      style={{
-        fontFamily:
-          "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
-        color: "#ffffff",
-        minHeight: "100vh",
-        scrollBehavior: "smooth",
-        background: `
-          linear-gradient(
-            135deg,
-            #005B96 0%,
-            #004d40 25%,
-            #00A878 45%,
-            #F5A623 60%,
-            #cfd8dc 75%,
-            #005B96 100%
-          )
-        `,
-        backgroundSize: "500% 500%",
-        animation: "gradientMove 26s ease infinite",
-      }}
-    >
+    <main>
       {/* NAVBAR */}
       <nav className="navbar">
         <a href="#home">Home</a>
@@ -181,49 +159,25 @@ export default function HomePage() {
 
       {/* HERO */}
       <section id="home" style={{ padding: "180px 20px 140px", textAlign: "center" }}>
-        <h1 style={{ fontSize: "clamp(38px,6vw,64px)", marginBottom: 32 }}>
-          {home.hero_title}
-        </h1>
+        <h1>{home.hero_title}</h1>
         <div className="panel">
           {renderRichText(home.hero_description)}
         </div>
       </section>
 
-      {/* SURVEY */}
+      {/* ENCUESTA */}
       <section id="survey" style={{ padding: "120px 20px", textAlign: "center" }}>
         <div className="panel">
           <h2>Encuesta</h2>
-          <p>Ayúdanos a mejorar este sistema respondiendo esta breve encuesta.</p>
           <SurveyForm />
         </div>
       </section>
 
-      {/* FOOTER */}
+      {/* CONTACTO */}
       {home.Contact1 && (
-        <footer
-          id="contacto"
-          style={{
-            width: "100%",
-            background: "#000",
-            padding: "140px 20px",
-            marginTop: 160,
-          }}
-        >
-          <div
-            style={{
-              maxWidth: 900,
-              margin: "0 auto",
-              padding: "64px 48px",
-              borderRadius: 24,
-              background: "#0d0d0d",
-              boxShadow: "0 40px 100px rgba(0,0,0,0.8)",
-              border: "1px solid rgba(245,166,35,0.25)",
-              textAlign: "center",
-            }}
-          >
-            <h2>{home.Contact1.title}</h2>
-            {renderRichText(home.Contact1.description)}
-          </div>
+        <footer id="contacto" style={{ padding: 120, textAlign: "center" }}>
+          <h2>{home.Contact1.title}</h2>
+          {renderRichText(home.Contact1.description)}
         </footer>
       )}
     </main>
