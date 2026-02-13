@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 async function getHome() {
   const res = await fetch(
@@ -130,14 +130,21 @@ function SurveyForm() {
   );
 }
 
-export default async function HomePage() {
-  const data = await getHome();
-  const home = data?.data;
+export default function HomePage() {
+  const [home, setHome] = useState(null);
+
+  useEffect(() => {
+    async function load() {
+      const data = await getHome();
+      setHome(data?.data);
+    }
+    load();
+  }, []);
 
   if (!home) {
     return (
       <main style={{ padding: 80, textAlign: "center" }}>
-        <h1>Contenido no disponible</h1>
+        <h1>Cargando...</h1>
       </main>
     );
   }
@@ -165,78 +172,6 @@ export default async function HomePage() {
         animation: "gradientMove 26s ease infinite",
       }}
     >
-      <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
-
-        html {
-          scroll-behavior: smooth;
-        }
-
-        @keyframes gradientMove {
-          0% { background-position: 0% 50%; }
-          50% { background-position: 100% 50%; }
-          100% { background-position: 0% 50%; }
-        }
-
-        .panel {
-          max-width: 1100px;
-          margin: 0 auto;
-          padding: 56px 44px;
-          border-radius: 26px;
-          backdrop-filter: blur(12px);
-          background: rgba(0,0,0,0.45);
-          box-shadow: 0 35px 90px rgba(0,0,0,0.45);
-          border: 1px solid rgba(245,166,35,0.25);
-        }
-
-        h1 { font-weight: 800; }
-        h2 { font-weight: 700; margin-bottom: 24px; }
-        h3 { font-weight: 600; }
-
-        .navbar {
-          position: fixed;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 72px;
-          background: rgba(0,0,0,0.65);
-          backdrop-filter: blur(10px);
-          z-index: 1000;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          gap: 40px;
-          border-bottom: 1px solid rgba(245,166,35,0.25);
-        }
-
-        .navbar a {
-          color: #ffffff;
-          text-decoration: none;
-          font-weight: 600;
-          font-size: 16px;
-          position: relative;
-        }
-
-        .navbar a::after {
-          content: "";
-          position: absolute;
-          left: 0;
-          bottom: -6px;
-          width: 0;
-          height: 2px;
-          background: #F5A623;
-          transition: width 0.3s ease;
-        }
-
-        .navbar a:hover::after {
-          width: 100%;
-        }
-
-        section {
-          scroll-margin-top: 90px;
-        }
-      `}</style>
-
       {/* NAVBAR */}
       <nav className="navbar">
         <a href="#home">Home</a>
@@ -294,5 +229,6 @@ export default async function HomePage() {
     </main>
   );
 }
+
 
 
