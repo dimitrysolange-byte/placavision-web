@@ -1,3 +1,6 @@
+"use client";
+import { useState } from "react";
+
 async function getHome() {
   const res = await fetch(
     "https://placavision-cms.onrender.com/api/home?populate=*",
@@ -31,6 +34,100 @@ function renderRichText(blocks: any[]) {
     }
     return null;
   });
+}
+
+/* ================= SURVEY FORM ================= */
+function SurveyForm() {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    user_type: "",
+    system_usefulness: "",
+    usage_environment: [],
+    main_feature: "",
+    interested_in_trial: false,
+    budget_range: "",
+    comments: "",
+    contact_permission: false,
+  });
+
+  const [sent, setSent] = useState(false);
+
+  function handleChange(e) {
+    const { name, value, type, checked } = e.target;
+
+    if (type === "checkbox" && name === "usage_environment") {
+      let updated = [...form.usage_environment];
+      if (checked) {
+        updated.push(value);
+      } else {
+        updated = updated.filter((v) => v !== value);
+      }
+      setForm({ ...form, usage_environment: updated });
+    } else if (type === "checkbox") {
+      setForm({ ...form, [name]: checked });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
+  }
+
+  async function handleSubmit(e) {
+    e.preventDefault();
+
+    await fetch("https://placavision-cms.onrender.com/api/surveys", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ data: form }),
+    });
+
+    setSent(true);
+  }
+
+  if (sent) {
+    return <p>Gracias por completar la encuesta.</p>;
+  }
+
+  return (
+    <form onSubmit={handleSubmit} style={{ textAlign: "left", marginTop: 30 }}>
+      <input name="name" placeholder="Nombre" onChange={handleChange} />
+      <br /><br />
+
+      <input name="email" placeholder="Correo" onChange={handleChange} />
+      <br /><br />
+
+      <select name="user_type" onChange={handleChange}>
+        <option value="">Tipo de usuario</option>
+        <option value="empresa_seguridad">Empresa de seguridad</option>
+        <option value="gobierno_policia">Gobierno / Policía</option>
+        <option value="estacionamiento_privado">Estacionamiento privado</option>
+        <option value="empresa_transporte">Empresa de transporte</option>
+        <option value="usuario_particular">Usuario particular</option>
+        <option value="otro">Otro</option>
+      </select>
+      <br /><br />
+
+      <textarea
+        name="comments"
+        placeholder="Comentarios"
+        onChange={handleChange}
+      />
+      <br /><br />
+
+      <label>
+        <input
+          type="checkbox"
+          name="contact_permission"
+          onChange={handleChange}
+        />
+        Acepto ser contactado
+      </label>
+      <br /><br />
+
+      <button type="submit">Enviar encuesta</button>
+    </form>
+  );
 }
 
 export default async function HomePage() {
@@ -96,7 +193,6 @@ export default async function HomePage() {
         h2 { font-weight: 700; margin-bottom: 24px; }
         h3 { font-weight: 600; }
 
-        /* ===== NAVBAR ===== */
         .navbar {
           position: fixed;
           top: 0;
@@ -136,107 +232,38 @@ export default async function HomePage() {
           width: 100%;
         }
 
-        /* offset para scroll con navbar fija */
         section {
           scroll-margin-top: 90px;
         }
       `}</style>
 
-      {/* ================= NAVBAR ================= */}
+      {/* NAVBAR */}
       <nav className="navbar">
         <a href="#home">Home</a>
+        <a href="#survey">Encuesta</a>
         <a href="#contacto">Contacto</a>
       </nav>
 
-      {/* ================= HERO ================= */}
+      {/* HERO */}
       <section id="home" style={{ padding: "180px 20px 140px", textAlign: "center" }}>
         <h1 style={{ fontSize: "clamp(38px,6vw,64px)", marginBottom: 32 }}>
           {home.hero_title}
         </h1>
-
         <div className="panel">
           {renderRichText(home.hero_description)}
         </div>
       </section>
 
-      {/* ================= PROPÓSITO ================= */}
-      {home.purpose && (
-        <section style={{ padding: "120px 20px", textAlign: "center" }}>
-          <div className="panel">
-            <h2>Propósito</h2>
-            {renderRichText(home.purpose)}
-          </div>
-        </section>
-      )}
+      {/* SURVEY */}
+      <section id="survey" style={{ padding: "120px 20px", textAlign: "center" }}>
+        <div className="panel">
+          <h2>Encuesta</h2>
+          <p>Ayúdanos a mejorar este sistema respondiendo esta breve encuesta.</p>
+          <SurveyForm />
+        </div>
+      </section>
 
-      {/* ================= BENEFICIOS ================= */}
-      {Array.isArray(home.benefit_item) && (
-        <section style={{ padding: "120px 20px", textAlign: "center" }}>
-          <div className="panel">
-            <h2>Beneficios</h2>
-
-            <div
-              style={{
-                display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
-                gap: 32,
-              }}
-            >
-              {home.benefit_item.map((item: any, i: number) => (
-                <div
-                  key={i}
-                  style={{
-                    background: "rgba(255,255,255,0.15)",
-                    padding: 28,
-                    borderRadius: 18,
-                  }}
-                >
-                  <h3>{item.title}</h3>
-                  <p>{item.description}</p>
-                </div>
-              ))}
-            </div>
-          </div>
-        </section>
-      )}
-
-      {/* ================= VISIÓN ================= */}
-      {home.vision && (
-        <section style={{ padding: "120px 20px", textAlign: "center" }}>
-          <div className="panel">
-            <h2>Visión</h2>
-            <p style={{ maxWidth: 720, margin: "0 auto", fontSize: 18 }}>
-              {home.vision}
-            </p>
-          </div>
-        </section>
-      )}
-
-      {/* ================= VALORES ================= */}
-      {home.Valores && (
-        <section style={{ padding: "120px 20px", textAlign: "center" }}>
-          <div className="panel">
-            <h2>Valores</h2>
-            <ul
-              style={{
-                maxWidth: 520,
-                margin: "24px auto 0",
-                textAlign: "left",
-                lineHeight: 2,
-                fontSize: 18,
-              }}
-            >
-              {home.Valores.split("\n")
-                .filter(Boolean)
-                .map((v: string, i: number) => (
-                  <li key={i}>● {v}</li>
-                ))}
-            </ul>
-          </div>
-        </section>
-      )}
-
-      {/* ================= FOOTER / CONTACTO ================= */}
+      {/* FOOTER */}
       {home.Contact1 && (
         <footer
           id="contacto"
@@ -260,41 +287,12 @@ export default async function HomePage() {
             }}
           >
             <h2>{home.Contact1.title}</h2>
-
             {renderRichText(home.Contact1.description)}
-
-            <div style={{ marginTop: 36, fontSize: 18, lineHeight: 2 }}>
-              {home.Contact1.email && (
-                <p>
-                  📧{" "}
-                  <a
-                    href={`mailto:${home.Contact1.email}`}
-                    style={{ color: "#F5A623", textDecoration: "none" }}
-                  >
-                    {home.Contact1.email}
-                  </a>
-                </p>
-              )}
-
-              {home.Contact1.phone && <p>📞 {home.Contact1.phone}</p>}
-
-              {home.Contact1.whatsapp && (
-                <p>
-                  💬{" "}
-                  <a
-                    href={`https://wa.me/${home.Contact1.whatsapp}`}
-                    target="_blank"
-                    style={{ color: "#25D366", textDecoration: "none" }}
-                  >
-                    WhatsApp
-                  </a>
-                </p>
-              )}
-            </div>
           </div>
         </footer>
       )}
     </main>
   );
 }
+
 
