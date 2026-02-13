@@ -150,25 +150,36 @@ export default function HomePage() {
 
   return (
     <main>
+      {/* NAVBAR */}
       <nav className="navbar">
         <a href="#home">Home</a>
         <a href="#survey">Encuesta</a>
         <a href="#contacto">Contacto</a>
       </nav>
 
-      <section id="home" style={{ padding: "180px 20px", textAlign: "center" }}>
+      {/* HERO */}
+      <section id="home" style={{ padding: "180px 20px 140px", textAlign: "center" }}>
         <h1>{home.hero_title}</h1>
         <div className="panel">
           {renderRichText(home.hero_description)}
         </div>
       </section>
 
+      {/* ENCUESTA */}
       <section id="survey" style={{ padding: "120px 20px", textAlign: "center" }}>
         <div className="panel">
           <h2>Encuesta</h2>
           <SurveyForm />
         </div>
       </section>
+
+      {/* CONTACTO */}
+      {home.Contact1 && (
+        <footer id="contacto" style={{ padding: 120, textAlign: "center" }}>
+          <h2>{home.Contact1.title}</h2>
+          {renderRichText(home.Contact1.description)}
+        </footer>
+      )}
     </main>
   );
 }
