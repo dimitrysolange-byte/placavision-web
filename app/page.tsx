@@ -1,42 +1,14 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 
-async function getHome() {
-  const res = await fetch(
-    "https://placavision-cms.onrender.com/api/home?populate=*",
-    { cache: "no-store" }
-  );
-
-  if (!res.ok) {
-    throw new Error("Error al cargar Home");
-  }
-
-  return res.json();
-}
-
-function renderRichText(blocks: any[]) {
-  if (!Array.isArray(blocks)) return null;
-
-  return blocks.map((block, i) => {
-    if (block.type === "paragraph") {
-      return (
-        <p key={i} style={{ marginBottom: 18, lineHeight: 1.75, fontSize: 18 }}>
-          {block.children?.map((c: any) => c.text).join("")}
-        </p>
-      );
-    }
-    return null;
-  });
-}
-
-/* ================= SURVEY FORM ================= */
 function SurveyForm() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    Tipo_de_usuario: "",
+    user_type: "",
     system_usefulness: "",
     usage_environment: [],
+    main_feature: "",
     interested_in_trial: false,
     budget_range: "",
     comments: "",
@@ -50,8 +22,11 @@ function SurveyForm() {
 
     if (type === "checkbox" && name === "usage_environment") {
       let updated = [...form.usage_environment];
-      if (checked) updated.push(value);
-      else updated = updated.filter((v) => v !== value);
+      if (checked) {
+        updated.push(value);
+      } else {
+        updated = updated.filter((v) => v !== value);
+      }
       setForm({ ...form, usage_environment: updated });
     } else if (type === "checkbox") {
       setForm({ ...form, [name]: checked });
@@ -74,7 +49,9 @@ function SurveyForm() {
     setSent(true);
   }
 
-  if (sent) return <p>Gracias por completar la encuesta.</p>;
+  if (sent) {
+    return <p>Gracias por completar la encuesta.</p>;
+  }
 
   return (
     <form onSubmit={handleSubmit} style={{ textAlign: "left", marginTop: 30 }}>
@@ -84,7 +61,7 @@ function SurveyForm() {
       <input name="email" placeholder="Correo" onChange={handleChange} />
       <br /><br />
 
-      <select name="Tipo_de_usuario" onChange={handleChange}>
+      <select name="user_type" onChange={handleChange}>
         <option value="">Tipo de usuario</option>
         <option value="empresa_seguridad">Empresa de seguridad</option>
         <option value="gobierno_policia">Gobierno / Policía</option>
@@ -116,84 +93,3 @@ function SurveyForm() {
     </form>
   );
 }
-
-export default function HomePage() {
-  const [home, setHome] = useState(null);
-
-  useEffect(() => {
-    async function load() {
-      const data = await getHome();
-      setHome(data?.data);
-    }
-    load();
-  }, []);
-
-  if (!home) {
-    return (
-      <main style={{ padding: 80, textAlign: "center" }}>
-        <h1>Cargando...</h1>
-      </main>
-    );
-  }
-
-  return (
-    <main>
-      {/* NAVBAR */}
-      <nav className="navbar">
-        <a href="#home">Home</a>
-        <a href="#survey">Encuesta</a>
-        <a href="#contacto">Contacto</a>
-      </nav>
-
-      {/* HERO */}
-      <section id="home" style={{ padding: "180px 20px", textAlign: "center" }}>
-        <h1>{home.hero_title}</h1>
-        <div className="panel">
-          {renderRichText(home.hero_description)}
-        </div>
-      </section>
-
-      {/* PROPÓSITO */}
-      {home.purpose && (
-        <section style={{ padding: "120px 20px", textAlign: "center" }}>
-          <div className="panel">
-            <h2>Propósito</h2>
-            {renderRichText(home.purpose)}
-          </div>
-        </section>
-      )}
-
-      {/* BENEFICIOS */}
-      {Array.isArray(home.benefit_item) && (
-        <section style={{ padding: "120px 20px", textAlign: "center" }}>
-          <div className="panel">
-            <h2>Beneficios</h2>
-            {home.benefit_item.map((item, i) => (
-              <div key={i}>
-                <h3>{item.title}</h3>
-                <p>{item.description}</p>
-              </div>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* ENCUESTA */}
-      <section id="survey" style={{ padding: "120px 20px", textAlign: "center" }}>
-        <div className="panel">
-          <h2>Encuesta</h2>
-          <SurveyForm />
-        </div>
-      </section>
-
-      {/* CONTACTO */}
-      {home.Contact1 && (
-        <footer id="contacto" style={{ padding: 120, textAlign: "center" }}>
-          <h2>{home.Contact1.title}</h2>
-          {renderRichText(home.Contact1.description)}
-        </footer>
-      )}
-    </main>
-  );
-}
-
