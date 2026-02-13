@@ -1,14 +1,51 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
+/* ================= FETCH HOME ================= */
+async function getHome() {
+  const res = await fetch(
+    "https://placavision-cms.onrender.com/api/home?populate=*",
+    { cache: "no-store" }
+  );
+
+  if (!res.ok) {
+    throw new Error("Error al cargar Home");
+  }
+
+  return res.json();
+}
+
+/* ================= RENDER RICH TEXT ================= */
+function renderRichText(blocks: any[]) {
+  if (!Array.isArray(blocks)) return null;
+
+  return blocks.map((block, i) => {
+    if (block.type === "paragraph") {
+      return (
+        <p
+          key={i}
+          style={{
+            marginBottom: 18,
+            lineHeight: 1.7,
+            fontSize: 18,
+          }}
+        >
+          {block.children?.map((c: any) => c.text).join("")}
+        </p>
+      );
+    }
+    return null;
+  });
+}
+
+/* ================= SURVEY FORM ================= */
 function SurveyForm() {
   const [form, setForm] = useState({
     name: "",
     email: "",
-    user_type: "",
+    Tipo_de_usuario: "",
     system_usefulness: "",
-    usage_environment: [],
-    main_feature: "",
+    usage_environment: "",
     interested_in_trial: false,
     budget_range: "",
     comments: "",
@@ -17,36 +54,35 @@ function SurveyForm() {
 
   const [sent, setSent] = useState(false);
 
-  function handleChange(e) {
+  function handleChange(e: any) {
     const { name, value, type, checked } = e.target;
 
-    if (type === "checkbox" && name === "usage_environment") {
-      let updated = [...form.usage_environment];
-      if (checked) {
-        updated.push(value);
-      } else {
-        updated = updated.filter((v) => v !== value);
-      }
-      setForm({ ...form, usage_environment: updated });
-    } else if (type === "checkbox") {
+    if (type === "checkbox") {
       setForm({ ...form, [name]: checked });
     } else {
       setForm({ ...form, [name]: value });
     }
   }
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: any) {
     e.preventDefault();
 
-    await fetch("https://placavision-cms.onrender.com/api/surveys", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ data: form }),
-    });
+    const res = await fetch(
+      "https://placavision-cms.onrender.com/api/surveys",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: form }),
+      }
+    );
 
-    setSent(true);
+    if (res.ok) {
+      setSent(true);
+    } else {
+      alert("Error enviando encuesta");
+    }
   }
 
   if (sent) {
@@ -54,30 +90,43 @@ function SurveyForm() {
   }
 
   return (
-    <form onSubmit={handleSubmit} style={{ textAlign: "left", marginTop: 30 }}>
-      <input name="name" placeholder="Nombre" onChange={handleChange} />
-      <br /><br />
+    <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
+      <input
+        name="name"
+        placeholder="Nombre"
+        onChange={handleChange}
+        style={{ width: "100%", padding: 10, marginBottom: 10 }}
+      />
 
-      <input name="email" placeholder="Correo" onChange={handleChange} />
-      <br /><br />
+      <input
+        name="email"
+        placeholder="Correo"
+        onChange={handleChange}
+        style={{ width: "100%", padding: 10, marginBottom: 10 }}
+      />
 
-      <select name="user_type" onChange={handleChange}>
+      <select
+        name="Tipo_de_usuario"
+        onChange={handleChange}
+        style={{ width: "100%", padding: 10, marginBottom: 10 }}
+      >
         <option value="">Tipo de usuario</option>
         <option value="empresa_seguridad">Empresa de seguridad</option>
         <option value="gobierno_policia">Gobierno / Policía</option>
-        <option value="estacionamiento_privado">Estacionamiento privado</option>
+        <option value="estacionamiento_privado">
+          Estacionamiento privado
+        </option>
         <option value="empresa_transporte">Empresa de transporte</option>
         <option value="usuario_particular">Usuario particular</option>
         <option value="otro">Otro</option>
       </select>
-      <br /><br />
 
       <textarea
         name="comments"
         placeholder="Comentarios"
         onChange={handleChange}
+        style={{ width: "100%", padding: 10, marginBottom: 10 }}
       />
-      <br /><br />
 
       <label>
         <input
@@ -87,9 +136,103 @@ function SurveyForm() {
         />
         Acepto ser contactado
       </label>
+
       <br /><br />
 
-      <button type="submit">Enviar encuesta</button>
+      <button
+        type="submit"
+        style={{
+          padding: "12px 24px",
+          background: "#00A878",
+          color: "#fff",
+          border: "none",
+          borderRadius: 6,
+          fontWeight: 600,
+        }}
+      >
+        Enviar encuesta
+      </button>
     </form>
+  );
+}
+
+/* ================= PAGE ================= */
+export default function HomePage() {
+  const [home, setHome] = useState<any>(null);
+
+  useEffect(() => {
+    async function load() {
+      const data = await getHome();
+      setHome(data?.data);
+    }
+    load();
+  }, []);
+
+  if (!home) {
+    return (
+      <main style={{ padding: 80, textAlign: "center" }}>
+        <h1>Cargando contenido...</h1>
+      </main>
+    );
+  }
+
+  return (
+    <main
+      style={{
+        fontFamily: "system-ui, sans-serif",
+        color: "#fff",
+        minHeight: "100vh",
+        background:
+          "linear-gradient(135deg, #005B96, #4D4D4D, #00A878)",
+      }}
+    >
+      {/* HERO */}
+      <section style={{ padding: "140px 20px", textAlign: "center" }}>
+        <h1 style={{ fontSize: "clamp(38px,6vw,64px)" }}>
+          {home.hero_title || "Placavisión"}
+        </h1>
+
+        {renderRichText(home.hero_description)}
+      </section>
+
+      {/* PROPÓSITO */}
+      {home.purpose && (
+        <section
+          style={{
+            padding: "80px 20px",
+            textAlign: "center",
+            background: "rgba(0,0,0,0.2)",
+          }}
+        >
+          <h2>Propósito</h2>
+          {renderRichText(home.purpose)}
+        </section>
+      )}
+
+      {/* VISIÓN */}
+      {home.vision && (
+        <section style={{ padding: "80px 20px", textAlign: "center" }}>
+          <h2>Visión</h2>
+          <p style={{ maxWidth: 700, margin: "20px auto" }}>
+            {home.vision}
+          </p>
+        </section>
+      )}
+
+      {/* SURVEY */}
+      <section
+        style={{
+          padding: "100px 20px",
+          textAlign: "center",
+          background: "rgba(0,0,0,0.3)",
+        }}
+      >
+        <h2>Encuesta</h2>
+        <p>
+          Ayúdanos a mejorar este sistema respondiendo esta breve encuesta.
+        </p>
+        <SurveyForm />
+      </section>
+    </main>
   );
 }
