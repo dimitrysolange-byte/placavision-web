@@ -1,3 +1,4 @@
+
 "use client";
 import { useState, useEffect } from "react";
 
@@ -116,7 +117,7 @@ export default function HomePage() {
   useEffect(() => {
     async function load() {
       const data = await getHome();
-      setHome(data?.data?.attributes);
+      setHome(data?.data); // ← estructura correcta
     }
     load();
   }, []);
@@ -264,4 +265,3 @@ export default function HomePage() {
     </main>
   );
 }
-
