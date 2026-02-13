@@ -22,7 +22,14 @@ function renderRichText(blocks: any[]) {
   return blocks.map((block, i) => {
     if (block.type === "paragraph") {
       return (
-        <p key={i} style={{ marginBottom: 18, lineHeight: 1.7 }}>
+        <p
+          key={i}
+          style={{
+            marginBottom: 18,
+            lineHeight: 1.75,
+            fontSize: 18,
+          }}
+        >
           {block.children?.map((c: any) => c.text).join("")}
         </p>
       );
@@ -68,30 +75,24 @@ function SurveyForm() {
     if (res.ok) setSent(true);
   }
 
-  if (sent) return <p>Gracias por completar la encuesta.</p>;
+  if (sent) {
+    return <p>Gracias por completar la encuesta.</p>;
+  }
 
   return (
     <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
-      <input
-        name="name"
-        placeholder="Nombre"
-        onChange={handleChange}
-        style={{ width: "100%", padding: 10, marginBottom: 10 }}
-      />
+      <input name="name" placeholder="Nombre" onChange={handleChange} />
+      <br /><br />
 
-      <input
-        name="email"
-        placeholder="Correo"
-        onChange={handleChange}
-        style={{ width: "100%", padding: 10, marginBottom: 10 }}
-      />
+      <input name="email" placeholder="Correo" onChange={handleChange} />
+      <br /><br />
 
       <textarea
         name="comments"
         placeholder="Comentarios"
         onChange={handleChange}
-        style={{ width: "100%", padding: 10, marginBottom: 10 }}
       />
+      <br /><br />
 
       <label>
         <input
@@ -101,22 +102,9 @@ function SurveyForm() {
         />
         Acepto ser contactado
       </label>
-
       <br /><br />
 
-      <button
-        type="submit"
-        style={{
-          padding: "12px 24px",
-          background: "#00A878",
-          color: "#fff",
-          border: "none",
-          borderRadius: 6,
-          fontWeight: 600,
-        }}
-      >
-        Enviar encuesta
-      </button>
+      <button type="submit">Enviar encuesta</button>
     </form>
   );
 }
@@ -136,7 +124,7 @@ export default function HomePage() {
   if (!home) {
     return (
       <main style={{ padding: 80, textAlign: "center" }}>
-        <h1>Cargando contenido...</h1>
+        <h1>Cargando...</h1>
       </main>
     );
   }
@@ -144,8 +132,9 @@ export default function HomePage() {
   return (
     <main
       style={{
-        fontFamily: "system-ui, sans-serif",
-        color: "#fff",
+        fontFamily:
+          "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
+        color: "#ffffff",
         minHeight: "100vh",
         background: `
           linear-gradient(
@@ -163,73 +152,42 @@ export default function HomePage() {
       }}
     >
       {/* NAVBAR */}
-      <nav
-        style={{
-          position: "fixed",
-          top: 0,
-          width: "100%",
-          background: "rgba(0,0,0,0.5)",
-          backdropFilter: "blur(10px)",
-          padding: "16px 30px",
-          display: "flex",
-          justifyContent: "center",
-          gap: 40,
-          zIndex: 1000,
-        }}
-      >
+      <nav className="navbar">
         <a href="#home">Home</a>
         <a href="#survey">Encuesta</a>
         <a href="#contacto">Contacto</a>
       </nav>
 
       {/* HERO */}
-      <section id="home" style={{ padding: "180px 20px 120px", textAlign: "center" }}>
-        <h1 style={{ fontSize: "clamp(38px,6vw,64px)" }}>
-          {home.hero_title}
-        </h1>
-
-        {renderRichText(home.hero_description)}
+      <section id="home" style={{ padding: "180px 20px 140px", textAlign: "center" }}>
+        <div className="panel">
+          <h1 style={{ fontSize: "clamp(38px,6vw,64px)", marginBottom: 32 }}>
+            {home.hero_title}
+          </h1>
+          {renderRichText(home.hero_description)}
+        </div>
       </section>
-
-      {/* PROPÓSITO */}
-      {home.purpose && (
-        <section style={{ padding: "80px 20px", textAlign: "center" }}>
-          <h2>Propósito</h2>
-          {renderRichText(home.purpose)}
-        </section>
-      )}
-
-      {/* VISIÓN */}
-      {home.vision && (
-        <section style={{ padding: "80px 20px", textAlign: "center" }}>
-          <h2>Visión</h2>
-          <p style={{ maxWidth: 700, margin: "20px auto" }}>
-            {home.vision}
-          </p>
-        </section>
-      )}
 
       {/* SURVEY */}
-      <section id="survey" style={{ padding: "100px 20px", textAlign: "center" }}>
-        <h2>Encuesta</h2>
-        <p>Ayúdanos a mejorar el sistema.</p>
-        <SurveyForm />
+      <section id="survey" style={{ padding: "120px 20px", textAlign: "center" }}>
+        <div className="panel">
+          <h2>Encuesta</h2>
+          <p>Ayúdanos a mejorar este sistema respondiendo esta breve encuesta.</p>
+          <SurveyForm />
+        </div>
       </section>
 
-      {/* FOOTER */}
-      <footer
-        id="contacto"
-        style={{
-          background: "#000",
-          padding: "80px 20px",
-          textAlign: "center",
-        }}
-      >
-        <h2>Contacto</h2>
-        <p>Placavisión</p>
-      </footer>
+      {/* FOOTER / CONTACTO */}
+      {home.Contact1 && (
+        <footer id="contacto" style={{ padding: "140px 20px" }}>
+          <div className="panel">
+            <h2>{home.Contact1.title}</h2>
+            {renderRichText(home.Contact1.description)}
+          </div>
+        </footer>
+      )}
 
-      {/* ANIMACIÓN */}
+      {/* ESTILOS */}
       <style jsx>{`
         @keyframes gradientMove {
           0% {
@@ -243,10 +201,33 @@ export default function HomePage() {
           }
         }
 
-        a {
+        .navbar {
+          position: fixed;
+          top: 0;
+          width: 100%;
+          background: rgba(0, 0, 0, 0.45);
+          backdrop-filter: blur(10px);
+          padding: 16px;
+          display: flex;
+          justify-content: center;
+          gap: 40px;
+          z-index: 1000;
+        }
+
+        .navbar a {
           color: white;
           text-decoration: none;
           font-weight: 600;
+        }
+
+        .panel {
+          max-width: 900px;
+          margin: 0 auto;
+          padding: 48px 36px;
+          background: rgba(0, 0, 0, 0.55);
+          backdrop-filter: blur(12px);
+          border-radius: 18px;
+          box-shadow: 0 30px 80px rgba(0, 0, 0, 0.6);
         }
       `}</style>
     </main>
