@@ -116,7 +116,7 @@ export default function HomePage() {
   useEffect(() => {
     async function load() {
       const data = await getHome();
-      setHome(data?.data);
+      setHome(data?.data?.attributes);
     }
     load();
   }, []);
@@ -159,7 +159,10 @@ export default function HomePage() {
       </nav>
 
       {/* HERO */}
-      <section id="home" style={{ padding: "180px 20px 140px", textAlign: "center" }}>
+      <section
+        id="home"
+        style={{ padding: "180px 20px 140px", textAlign: "center" }}
+      >
         <div className="panel">
           <h1 style={{ fontSize: "clamp(38px,6vw,64px)", marginBottom: 32 }}>
             {home.hero_title}
@@ -168,18 +171,46 @@ export default function HomePage() {
         </div>
       </section>
 
+      {/* PROPÓSITO */}
+      {home.purpose && (
+        <section style={{ padding: "120px 20px", textAlign: "center" }}>
+          <div className="panel">
+            <h2>Propósito</h2>
+            {renderRichText(home.purpose)}
+          </div>
+        </section>
+      )}
+
+      {/* VISIÓN */}
+      {home.vision && (
+        <section style={{ padding: "120px 20px", textAlign: "center" }}>
+          <div className="panel">
+            <h2>Visión</h2>
+            <p>{home.vision}</p>
+          </div>
+        </section>
+      )}
+
       {/* SURVEY */}
-      <section id="survey" style={{ padding: "120px 20px", textAlign: "center" }}>
+      <section
+        id="survey"
+        style={{ padding: "120px 20px", textAlign: "center" }}
+      >
         <div className="panel">
           <h2>Encuesta</h2>
-          <p>Ayúdanos a mejorar este sistema respondiendo esta breve encuesta.</p>
+          <p>
+            Ayúdanos a mejorar este sistema respondiendo esta breve encuesta.
+          </p>
           <SurveyForm />
         </div>
       </section>
 
-      {/* FOOTER / CONTACTO */}
+      {/* CONTACTO */}
       {home.Contact1 && (
-        <footer id="contacto" style={{ padding: "140px 20px" }}>
+        <footer
+          id="contacto"
+          style={{ padding: "140px 20px", textAlign: "center" }}
+        >
           <div className="panel">
             <h2>{home.Contact1.title}</h2>
             {renderRichText(home.Contact1.description)}
@@ -233,3 +264,4 @@ export default function HomePage() {
     </main>
   );
 }
+
