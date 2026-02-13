@@ -22,14 +22,7 @@ function renderRichText(blocks: any[]) {
   return blocks.map((block, i) => {
     if (block.type === "paragraph") {
       return (
-        <p
-          key={i}
-          style={{
-            marginBottom: 18,
-            lineHeight: 1.7,
-            fontSize: 18,
-          }}
-        >
+        <p key={i} style={{ marginBottom: 18, lineHeight: 1.7 }}>
           {block.children?.map((c: any) => c.text).join("")}
         </p>
       );
@@ -44,10 +37,6 @@ function SurveyForm() {
     name: "",
     email: "",
     Tipo_de_usuario: "",
-    system_usefulness: "",
-    usage_environment: "",
-    interested_in_trial: false,
-    budget_range: "",
     comments: "",
     contact_permission: false,
   });
@@ -71,23 +60,15 @@ function SurveyForm() {
       "https://placavision-cms.onrender.com/api/surveys",
       {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ data: form }),
       }
     );
 
-    if (res.ok) {
-      setSent(true);
-    } else {
-      alert("Error enviando encuesta");
-    }
+    if (res.ok) setSent(true);
   }
 
-  if (sent) {
-    return <p>Gracias por completar la encuesta.</p>;
-  }
+  if (sent) return <p>Gracias por completar la encuesta.</p>;
 
   return (
     <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
@@ -104,22 +85,6 @@ function SurveyForm() {
         onChange={handleChange}
         style={{ width: "100%", padding: 10, marginBottom: 10 }}
       />
-
-      <select
-        name="Tipo_de_usuario"
-        onChange={handleChange}
-        style={{ width: "100%", padding: 10, marginBottom: 10 }}
-      >
-        <option value="">Tipo de usuario</option>
-        <option value="empresa_seguridad">Empresa de seguridad</option>
-        <option value="gobierno_policia">Gobierno / Policía</option>
-        <option value="estacionamiento_privado">
-          Estacionamiento privado
-        </option>
-        <option value="empresa_transporte">Empresa de transporte</option>
-        <option value="usuario_particular">Usuario particular</option>
-        <option value="otro">Otro</option>
-      </select>
 
       <textarea
         name="comments"
@@ -182,14 +147,45 @@ export default function HomePage() {
         fontFamily: "system-ui, sans-serif",
         color: "#fff",
         minHeight: "100vh",
-        background:
-          "linear-gradient(135deg, #005B96, #4D4D4D, #00A878)",
+        background: `
+          linear-gradient(
+            135deg,
+            #005B96 0%,
+            #004d40 25%,
+            #00A878 45%,
+            #F5A623 60%,
+            #cfd8dc 75%,
+            #005B96 100%
+          )
+        `,
+        backgroundSize: "500% 500%",
+        animation: "gradientMove 26s ease infinite",
       }}
     >
+      {/* NAVBAR */}
+      <nav
+        style={{
+          position: "fixed",
+          top: 0,
+          width: "100%",
+          background: "rgba(0,0,0,0.5)",
+          backdropFilter: "blur(10px)",
+          padding: "16px 30px",
+          display: "flex",
+          justifyContent: "center",
+          gap: 40,
+          zIndex: 1000,
+        }}
+      >
+        <a href="#home">Home</a>
+        <a href="#survey">Encuesta</a>
+        <a href="#contacto">Contacto</a>
+      </nav>
+
       {/* HERO */}
-      <section style={{ padding: "140px 20px", textAlign: "center" }}>
+      <section id="home" style={{ padding: "180px 20px 120px", textAlign: "center" }}>
         <h1 style={{ fontSize: "clamp(38px,6vw,64px)" }}>
-          {home.hero_title || "Placavisión"}
+          {home.hero_title}
         </h1>
 
         {renderRichText(home.hero_description)}
@@ -197,13 +193,7 @@ export default function HomePage() {
 
       {/* PROPÓSITO */}
       {home.purpose && (
-        <section
-          style={{
-            padding: "80px 20px",
-            textAlign: "center",
-            background: "rgba(0,0,0,0.2)",
-          }}
-        >
+        <section style={{ padding: "80px 20px", textAlign: "center" }}>
           <h2>Propósito</h2>
           {renderRichText(home.purpose)}
         </section>
@@ -220,19 +210,45 @@ export default function HomePage() {
       )}
 
       {/* SURVEY */}
-      <section
-        style={{
-          padding: "100px 20px",
-          textAlign: "center",
-          background: "rgba(0,0,0,0.3)",
-        }}
-      >
+      <section id="survey" style={{ padding: "100px 20px", textAlign: "center" }}>
         <h2>Encuesta</h2>
-        <p>
-          Ayúdanos a mejorar este sistema respondiendo esta breve encuesta.
-        </p>
+        <p>Ayúdanos a mejorar el sistema.</p>
         <SurveyForm />
       </section>
+
+      {/* FOOTER */}
+      <footer
+        id="contacto"
+        style={{
+          background: "#000",
+          padding: "80px 20px",
+          textAlign: "center",
+        }}
+      >
+        <h2>Contacto</h2>
+        <p>Placavisión</p>
+      </footer>
+
+      {/* ANIMACIÓN */}
+      <style jsx>{`
+        @keyframes gradientMove {
+          0% {
+            background-position: 0% 50%;
+          }
+          50% {
+            background-position: 100% 50%;
+          }
+          100% {
+            background-position: 0% 50%;
+          }
+        }
+
+        a {
+          color: white;
+          text-decoration: none;
+          font-weight: 600;
+        }
+      `}</style>
     </main>
   );
 }
