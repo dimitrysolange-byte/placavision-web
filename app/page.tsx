@@ -20,14 +20,7 @@ function renderRichText(blocks: any[]) {
   return blocks.map((block, i) => {
     if (block.type === "paragraph") {
       return (
-        <p
-          key={i}
-          style={{
-            marginBottom: 18,
-            lineHeight: 1.75,
-            fontSize: 18,
-          }}
-        >
+        <p key={i} style={{ marginBottom: 18, lineHeight: 1.75, fontSize: 18 }}>
           {block.children?.map((c: any) => c.text).join("")}
         </p>
       );
@@ -57,11 +50,8 @@ function SurveyForm() {
 
     if (type === "checkbox" && name === "usage_environment") {
       let updated = [...form.usage_environment];
-      if (checked) {
-        updated.push(value);
-      } else {
-        updated = updated.filter((v) => v !== value);
-      }
+      if (checked) updated.push(value);
+      else updated = updated.filter((v) => v !== value);
       setForm({ ...form, usage_environment: updated });
     } else if (type === "checkbox") {
       setForm({ ...form, [name]: checked });
@@ -84,9 +74,7 @@ function SurveyForm() {
     setSent(true);
   }
 
-  if (sent) {
-    return <p>Gracias por completar la encuesta.</p>;
-  }
+  if (sent) return <p>Gracias por completar la encuesta.</p>;
 
   return (
     <form onSubmit={handleSubmit} style={{ textAlign: "left", marginTop: 30 }}>
@@ -158,12 +146,37 @@ export default function HomePage() {
       </nav>
 
       {/* HERO */}
-      <section id="home" style={{ padding: "180px 20px 140px", textAlign: "center" }}>
+      <section id="home" style={{ padding: "180px 20px", textAlign: "center" }}>
         <h1>{home.hero_title}</h1>
         <div className="panel">
           {renderRichText(home.hero_description)}
         </div>
       </section>
+
+      {/* PROPÓSITO */}
+      {home.purpose && (
+        <section style={{ padding: "120px 20px", textAlign: "center" }}>
+          <div className="panel">
+            <h2>Propósito</h2>
+            {renderRichText(home.purpose)}
+          </div>
+        </section>
+      )}
+
+      {/* BENEFICIOS */}
+      {Array.isArray(home.benefit_item) && (
+        <section style={{ padding: "120px 20px", textAlign: "center" }}>
+          <div className="panel">
+            <h2>Beneficios</h2>
+            {home.benefit_item.map((item, i) => (
+              <div key={i}>
+                <h3>{item.title}</h3>
+                <p>{item.description}</p>
+              </div>
+            ))}
+          </div>
+        </section>
+      )}
 
       {/* ENCUESTA */}
       <section id="survey" style={{ padding: "120px 20px", textAlign: "center" }}>
@@ -183,3 +196,4 @@ export default function HomePage() {
     </main>
   );
 }
+
