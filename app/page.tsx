@@ -1,3 +1,6 @@
+"use client";
+import { useState } from "react";
+
 async function getHome() {
   const res = await fetch(
     "https://placavision-cms.onrender.com/api/home?populate=*",
@@ -31,6 +34,77 @@ function renderRichText(blocks: any[]) {
     }
     return null;
   });
+}
+
+/* ================= SURVEY FORM ================= */
+function SurveyForm() {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    Tipo_de_usuario: "",
+    comments: "",
+    contact_permission: false,
+  });
+
+  const [sent, setSent] = useState(false);
+
+  function handleChange(e: any) {
+    const { name, value, type, checked } = e.target;
+
+    if (type === "checkbox") {
+      setForm({ ...form, [name]: checked });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
+  }
+
+  async function handleSubmit(e: any) {
+    e.preventDefault();
+
+    const res = await fetch(
+      "https://placavision-cms.onrender.com/api/surveys",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ data: form }),
+      }
+    );
+
+    if (res.ok) setSent(true);
+  }
+
+  if (sent) {
+    return <p>Gracias por completar la encuesta.</p>;
+  }
+
+  return (
+    <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
+      <input name="name" placeholder="Nombre" onChange={handleChange} />
+      <br /><br />
+
+      <input name="email" placeholder="Correo" onChange={handleChange} />
+      <br /><br />
+
+      <textarea
+        name="comments"
+        placeholder="Comentarios"
+        onChange={handleChange}
+      />
+      <br /><br />
+
+      <label>
+        <input
+          type="checkbox"
+          name="contact_permission"
+          onChange={handleChange}
+        />
+        Acepto ser contactado
+      </label>
+      <br /><br />
+
+      <button type="submit">Enviar encuesta</button>
+    </form>
+  );
 }
 
 export default async function HomePage() {
@@ -95,7 +169,6 @@ export default async function HomePage() {
           h2 { font-weight: 700; margin-bottom: 24px; }
           h3 { font-weight: 600; }
 
-          /* NAVBAR */
           .navbar {
             position: fixed;
             top: 0;
@@ -144,6 +217,7 @@ export default async function HomePage() {
       {/* NAVBAR */}
       <nav className="navbar">
         <a href="#home">Home</a>
+        <a href="#survey">Encuesta</a>
         <a href="#contacto">Contacto</a>
       </nav>
 
@@ -178,8 +252,7 @@ export default async function HomePage() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns:
-                  "repeat(auto-fit, minmax(240px, 1fr))",
+                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
                 gap: 32,
               }}
             >
@@ -206,13 +279,7 @@ export default async function HomePage() {
         <section style={{ padding: "120px 20px", textAlign: "center" }}>
           <div className="panel">
             <h2>Visión</h2>
-            <p
-              style={{
-                maxWidth: 720,
-                margin: "0 auto",
-                fontSize: 18,
-              }}
-            >
+            <p style={{ maxWidth: 720, margin: "0 auto", fontSize: 18 }}>
               {home.vision}
             </p>
           </div>
@@ -282,38 +349,6 @@ export default async function HomePage() {
           >
             <h2>{home.Contact1.title}</h2>
             {renderRichText(home.Contact1.description)}
-
-            <div style={{ marginTop: 36, fontSize: 18, lineHeight: 2 }}>
-              {home.Contact1.email && (
-                <p>
-                  📧{" "}
-                  <a
-                    href={`mailto:${home.Contact1.email}`}
-                    style={{ color: "#F5A623", textDecoration: "none" }}
-                  >
-                    {home.Contact1.email}
-                  </a>
-                </p>
-              )}
-
-              {home.Contact1.phone && <p>📞 {home.Contact1.phone}</p>}
-
-              {home.Contact1.whatsapp && (
-                <p>
-                  💬{" "}
-                  <a
-                    href={`https://wa.me/${home.Contact1.whatsapp}`}
-                    target="_blank"
-                    style={{
-                      color: "#25D366",
-                      textDecoration: "none",
-                    }}
-                  >
-                    WhatsApp
-                  </a>
-                </p>
-              )}
-            </div>
           </div>
         </footer>
       )}
