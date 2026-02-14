@@ -178,7 +178,8 @@ export default async function HomePage() {
             <div
               style={{
                 display: "grid",
-                gridTemplateColumns: "repeat(auto-fit, minmax(240px, 1fr))",
+                gridTemplateColumns:
+                  "repeat(auto-fit, minmax(240px, 1fr))",
                 gap: 32,
               }}
             >
@@ -242,6 +243,20 @@ export default async function HomePage() {
         </section>
       )}
 
+      {/* SURVEY */}
+      <section
+        id="survey"
+        style={{ padding: "120px 20px", textAlign: "center" }}
+      >
+        <div className="panel">
+          <h2>Encuesta</h2>
+          <p>
+            Ayúdanos a mejorar Placavisión respondiendo esta breve encuesta.
+          </p>
+          <SurveyForm />
+        </div>
+      </section>
+
       {/* FOOTER / CONTACTO */}
       {home.Contact1 && (
         <footer
@@ -289,7 +304,10 @@ export default async function HomePage() {
                   <a
                     href={`https://wa.me/${home.Contact1.whatsapp}`}
                     target="_blank"
-                    style={{ color: "#25D366", textDecoration: "none" }}
+                    style={{
+                      color: "#25D366",
+                      textDecoration: "none",
+                    }}
                   >
                     WhatsApp
                   </a>
