@@ -109,9 +109,7 @@ function SurveyForm() {
 
 export default async function HomePage() {
   const data = await getHome();
-
-  // ✅ CORRECCIÓN PRINCIPAL
-  const home = data?.data?.attributes;
+  const home = data?.data;
 
   if (!home) {
     return (
@@ -128,20 +126,20 @@ export default async function HomePage() {
           "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         color: "#ffffff",
         minHeight: "100vh",
+        scrollBehavior: "smooth",
+        background: `linear-gradient(
+          135deg,
+          #005B96 0%,
+          #004d40 25%,
+          #00A878 45%,
+          #F5A623 60%,
+          #cfd8dc 75%,
+          #005B96 100%
+        )`,
+        backgroundSize: "500% 500%",
+        animation: "gradientMove 26s ease infinite",
       }}
     >
-      {/* HERO */}
-      <section id="home" style={{ padding: "180px 20px 140px", textAlign: "center" }}>
-        <h1>{home.hero_title}</h1>
-        {renderRichText(home.hero_description)}
-      </section>
-
-      {/* SURVEY */}
-      <section id="survey" style={{ padding: "120px 20px", textAlign: "center" }}>
-        <h2>Encuesta</h2>
-        <SurveyForm />
-      </section>
-
       {/* CONTACTO */}
       {home.Contact1 && (
         <footer
@@ -151,26 +149,25 @@ export default async function HomePage() {
             background: "#000",
             padding: "140px 20px",
             marginTop: 160,
-            textAlign: "center",
           }}
         >
-          <h2>{home.Contact1.title}</h2>
-          {renderRichText(home.Contact1.description)}
-
-          {home.Contact1.email && (
-            <p>Email: {home.Contact1.email}</p>
-          )}
-
-          {home.Contact1.phone && (
-            <p>Teléfono: {home.Contact1.phone}</p>
-          )}
-
-          {home.Contact1.whatsapp && (
-            <p>WhatsApp: {home.Contact1.whatsapp}</p>
-          )}
+          <div
+            style={{
+              maxWidth: 900,
+              margin: "0 auto",
+              padding: "64px 48px",
+              borderRadius: 24,
+              background: "#0d0d0d",
+              boxShadow: "0 40px 100px rgba(0,0,0,0.8)",
+              border: "1px solid rgba(245,166,35,0.25)",
+              textAlign: "center",
+            }}
+          >
+            <h2>{home.Contact1.title}</h2>
+            {renderRichText(home.Contact1.description)}
+          </div>
         </footer>
       )}
     </main>
   );
 }
-
