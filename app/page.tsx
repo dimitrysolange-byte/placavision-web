@@ -39,9 +39,10 @@ function renderRichText(blocks: any[]) {
 }
 
 /* ================= SURVEY FORM ================= */
+
 function SurveyForm() {
   const [form, setForm] = useState({
-    name: "",
+    Name: "",
     email: "",
     Tipo_de_usuario: "",
     system_usefulness: "",
@@ -54,27 +55,36 @@ function SurveyForm() {
 
   const [sent, setSent] = useState(false);
 
-  function handleChange(e: any) {
+  function handleChange(e) {
     const { name, value, type, checked } = e.target;
 
-    setForm({
-      ...form,
-      [name]: type === "checkbox" ? checked : value,
-    });
+    if (type === "checkbox") {
+      setForm({ ...form, [name]: checked });
+    } else {
+      setForm({ ...form, [name]: value });
+    }
   }
 
-  async function handleSubmit(e: any) {
+  async function handleSubmit(e) {
     e.preventDefault();
 
-    await fetch("https://placavision-cms.onrender.com/api/surveys", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ data: form }),
-    });
+    const res = await fetch(
+      "https://placavision-cms.onrender.com/api/surveys",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ data: form }),
+      }
+    );
 
-    setSent(true);
+    if (res.ok) {
+      setSent(true);
+    } else {
+      alert("Error enviando encuesta");
+      console.error(await res.text());
+    }
   }
 
   if (sent) {
@@ -84,85 +94,36 @@ function SurveyForm() {
   return (
     <form onSubmit={handleSubmit} style={{ marginTop: 30 }}>
       <input
-        name="name"
+        name="Name"
         placeholder="Nombre"
         onChange={handleChange}
-        style={{ width: "100%", padding: 10, marginBottom: 12 }}
       />
+      <br /><br />
 
       <input
         name="email"
         placeholder="Correo"
         onChange={handleChange}
-        style={{ width: "100%", padding: 10, marginBottom: 12 }}
       />
+      <br /><br />
 
       <select
         name="Tipo_de_usuario"
         onChange={handleChange}
-        style={{ width: "100%", padding: 10, marginBottom: 12 }}
       >
         <option value="">Tipo de usuario</option>
         <option value="empresa_seguridad">Empresa de seguridad</option>
         <option value="gobierno_policia">Gobierno / Policía</option>
-        <option value="estacionamiento_privado">Estacionamiento privado</option>
-        <option value="empresa_transporte">Empresa de transporte</option>
         <option value="usuario_particular">Usuario particular</option>
-        <option value="otro">Otro</option>
       </select>
-
-      <select
-        name="system_usefulness"
-        onChange={handleChange}
-        style={{ width: "100%", padding: 10, marginBottom: 12 }}
-      >
-        <option value="">¿Qué tan útil es el sistema?</option>
-        <option value="muy_util">Muy útil</option>
-        <option value="util">Útil</option>
-        <option value="neutral">Neutral</option>
-        <option value="poco_util">Poco útil</option>
-      </select>
-
-      <select
-        name="usage_environment"
-        onChange={handleChange}
-        style={{ width: "100%", padding: 10, marginBottom: 12 }}
-      >
-        <option value="">Entorno de uso</option>
-        <option value="ciudad">Ciudad</option>
-        <option value="carretera">Carretera</option>
-        <option value="empresa">Empresa</option>
-        <option value="privado">Privado</option>
-      </select>
-
-      <select
-        name="budget_range"
-        onChange={handleChange}
-        style={{ width: "100%", padding: 10, marginBottom: 12 }}
-      >
-        <option value="">Rango de presupuesto</option>
-        <option value="bajo">Bajo</option>
-        <option value="medio">Medio</option>
-        <option value="alto">Alto</option>
-      </select>
-
-      <label>
-        <input
-          type="checkbox"
-          name="interested_in_trial"
-          onChange={handleChange}
-        />
-        Me interesa una prueba del sistema
-      </label>
-
       <br /><br />
 
       <textarea
         name="comments"
         placeholder="Comentarios"
         onChange={handleChange}
-        style={{ width: "100%", padding: 10, marginBottom: 12 }}
       />
+      <br /><br />
 
       <label>
         <input
@@ -172,7 +133,6 @@ function SurveyForm() {
         />
         Acepto ser contactado
       </label>
-
       <br /><br />
 
       <button type="submit">Enviar encuesta</button>
