@@ -43,6 +43,11 @@ function SurveyForm() {
   const [form, setForm] = useState({
     name: "",
     email: "",
+    Tipo_de_usuario: "",
+    system_usefulness: "",
+    usage_environment: "",
+    interested_in_trial: false,
+    budget_range: "",
     comments: "",
     contact_permission: false,
   });
@@ -51,6 +56,7 @@ function SurveyForm() {
 
   function handleChange(e: any) {
     const { name, value, type, checked } = e.target;
+
     setForm({
       ...form,
       [name]: type === "checkbox" ? checked : value,
@@ -90,6 +96,66 @@ function SurveyForm() {
         onChange={handleChange}
         style={{ width: "100%", padding: 10, marginBottom: 12 }}
       />
+
+      <select
+        name="Tipo_de_usuario"
+        onChange={handleChange}
+        style={{ width: "100%", padding: 10, marginBottom: 12 }}
+      >
+        <option value="">Tipo de usuario</option>
+        <option value="empresa_seguridad">Empresa de seguridad</option>
+        <option value="gobierno_policia">Gobierno / Policía</option>
+        <option value="estacionamiento_privado">Estacionamiento privado</option>
+        <option value="empresa_transporte">Empresa de transporte</option>
+        <option value="usuario_particular">Usuario particular</option>
+        <option value="otro">Otro</option>
+      </select>
+
+      <select
+        name="system_usefulness"
+        onChange={handleChange}
+        style={{ width: "100%", padding: 10, marginBottom: 12 }}
+      >
+        <option value="">¿Qué tan útil es el sistema?</option>
+        <option value="muy_util">Muy útil</option>
+        <option value="util">Útil</option>
+        <option value="neutral">Neutral</option>
+        <option value="poco_util">Poco útil</option>
+      </select>
+
+      <select
+        name="usage_environment"
+        onChange={handleChange}
+        style={{ width: "100%", padding: 10, marginBottom: 12 }}
+      >
+        <option value="">Entorno de uso</option>
+        <option value="ciudad">Ciudad</option>
+        <option value="carretera">Carretera</option>
+        <option value="empresa">Empresa</option>
+        <option value="privado">Privado</option>
+      </select>
+
+      <select
+        name="budget_range"
+        onChange={handleChange}
+        style={{ width: "100%", padding: 10, marginBottom: 12 }}
+      >
+        <option value="">Rango de presupuesto</option>
+        <option value="bajo">Bajo</option>
+        <option value="medio">Medio</option>
+        <option value="alto">Alto</option>
+      </select>
+
+      <label>
+        <input
+          type="checkbox"
+          name="interested_in_trial"
+          onChange={handleChange}
+        />
+        Me interesa una prueba del sistema
+      </label>
+
+      <br /><br />
 
       <textarea
         name="comments"
