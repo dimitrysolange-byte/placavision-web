@@ -133,27 +133,34 @@ function SurveyForm() {
         <option value="poco_util">Poco útil</option>
       </select>
 
+      {/* VALORES CORRECTOS SEGÚN STRAPI */}
       <select
         name="usage_environment"
         onChange={handleChange}
         style={{ width: "100%", padding: 10, marginBottom: 12 }}
       >
         <option value="">Entorno de uso</option>
-        <option value="ciudad">Ciudad</option>
-        <option value="carretera">Carretera</option>
-        <option value="empresa">Empresa</option>
-        <option value="privado">Privado</option>
+        <option value="calles_publicas">Calles públicas</option>
+        <option value="peajes">Peajes</option>
+        <option value="estacionamientos">Estacionamientos</option>
+        <option value="residenciales">Residenciales</option>
+        <option value="centros_comerciales">Centros comerciales</option>
+        <option value="fronteras">Fronteras</option>
+        <option value="otro">Otro</option>
       </select>
 
+      {/* VALORES CORRECTOS SEGÚN STRAPI */}
       <select
         name="budget_range"
         onChange={handleChange}
         style={{ width: "100%", padding: 10, marginBottom: 12 }}
       >
         <option value="">Rango de presupuesto</option>
-        <option value="bajo">Bajo</option>
-        <option value="medio">Medio</option>
-        <option value="alto">Alto</option>
+        <option value="menos_50">Menos de $50</option>
+        <option value="entre_50_100">Entre $50 y $100</option>
+        <option value="entre_100_300">Entre $100 y $300</option>
+        <option value="mas_300">Más de $300</option>
+        <option value="no_lo_se">No lo sé</option>
       </select>
 
       <label>
@@ -332,3 +339,4 @@ export default function HomePage() {
     </main>
   );
 }
+
