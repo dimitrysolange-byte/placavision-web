@@ -39,7 +39,6 @@ function renderRichText(blocks: any[]) {
 }
 
 /* ================= SURVEY FORM ================= */
-
 function SurveyForm() {
   const [form, setForm] = useState({
     Name: "",
@@ -55,17 +54,16 @@ function SurveyForm() {
 
   const [sent, setSent] = useState(false);
 
-  function handleChange(e) {
+  function handleChange(e: any) {
     const { name, value, type, checked } = e.target;
 
-    if (type === "checkbox") {
-      setForm({ ...form, [name]: checked });
-    } else {
-      setForm({ ...form, [name]: value });
-    }
+    setForm({
+      ...form,
+      [name]: type === "checkbox" ? checked : value,
+    });
   }
 
-  async function handleSubmit(e) {
+  async function handleSubmit(e: any) {
     e.preventDefault();
 
     const res = await fetch(
@@ -82,8 +80,8 @@ function SurveyForm() {
     if (res.ok) {
       setSent(true);
     } else {
-      alert("Error enviando encuesta");
       console.error(await res.text());
+      alert("Error enviando encuesta");
     }
   }
 
@@ -97,33 +95,84 @@ function SurveyForm() {
         name="Name"
         placeholder="Nombre"
         onChange={handleChange}
+        style={{ width: "100%", padding: 10, marginBottom: 12 }}
       />
-      <br /><br />
 
       <input
         name="email"
         placeholder="Correo"
         onChange={handleChange}
+        style={{ width: "100%", padding: 10, marginBottom: 12 }}
       />
-      <br /><br />
 
       <select
         name="Tipo_de_usuario"
         onChange={handleChange}
+        style={{ width: "100%", padding: 10, marginBottom: 12 }}
       >
         <option value="">Tipo de usuario</option>
         <option value="empresa_seguridad">Empresa de seguridad</option>
         <option value="gobierno_policia">Gobierno / Policía</option>
+        <option value="estacionamiento_privado">
+          Estacionamiento privado
+        </option>
+        <option value="empresa_transporte">Empresa de transporte</option>
         <option value="usuario_particular">Usuario particular</option>
+        <option value="otro">Otro</option>
       </select>
+
+      <select
+        name="system_usefulness"
+        onChange={handleChange}
+        style={{ width: "100%", padding: 10, marginBottom: 12 }}
+      >
+        <option value="">¿Qué tan útil es el sistema?</option>
+        <option value="muy_util">Muy útil</option>
+        <option value="util">Útil</option>
+        <option value="neutral">Neutral</option>
+        <option value="poco_util">Poco útil</option>
+      </select>
+
+      <select
+        name="usage_environment"
+        onChange={handleChange}
+        style={{ width: "100%", padding: 10, marginBottom: 12 }}
+      >
+        <option value="">Entorno de uso</option>
+        <option value="ciudad">Ciudad</option>
+        <option value="carretera">Carretera</option>
+        <option value="empresa">Empresa</option>
+        <option value="privado">Privado</option>
+      </select>
+
+      <select
+        name="budget_range"
+        onChange={handleChange}
+        style={{ width: "100%", padding: 10, marginBottom: 12 }}
+      >
+        <option value="">Rango de presupuesto</option>
+        <option value="bajo">Bajo</option>
+        <option value="medio">Medio</option>
+        <option value="alto">Alto</option>
+      </select>
+
+      <label>
+        <input
+          type="checkbox"
+          name="interested_in_trial"
+          onChange={handleChange}
+        />
+        Me interesa una prueba del sistema
+      </label>
+
       <br /><br />
 
       <textarea
         name="comments"
         placeholder="Comentarios"
         onChange={handleChange}
+        style={{ width: "100%", padding: 10, marginBottom: 12 }}
       />
-      <br /><br />
 
       <label>
         <input
@@ -133,6 +182,7 @@ function SurveyForm() {
         />
         Acepto ser contactado
       </label>
+
       <br /><br />
 
       <button type="submit">Enviar encuesta</button>
@@ -167,7 +217,6 @@ export default function HomePage() {
           "'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif",
         color: "#ffffff",
         minHeight: "100vh",
-        scrollBehavior: "smooth",
         background: `linear-gradient(
           135deg,
           #005B96 0%,
@@ -195,8 +244,6 @@ export default function HomePage() {
           border-radius: 26px;
           backdrop-filter: blur(12px);
           background: rgba(0,0,0,0.45);
-          box-shadow: 0 35px 90px rgba(0,0,0,0.45);
-          border: 1px solid rgba(245,166,35,0.25);
         }
 
         .navbar {
@@ -206,12 +253,11 @@ export default function HomePage() {
           width: 100%;
           height: 72px;
           background: rgba(0,0,0,0.65);
-          backdrop-filter: blur(10px);
-          z-index: 1000;
           display: flex;
           align-items: center;
           justify-content: center;
           gap: 40px;
+          z-index: 1000;
         }
 
         .navbar a {
@@ -242,48 +288,15 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* PROPÓSITO */}
-      {home.purpose && (
-        <section style={{ padding: "120px 20px", textAlign: "center" }}>
-          <div className="panel">
-            <h2>Propósito</h2>
-            {renderRichText(home.purpose)}
-          </div>
-        </section>
-      )}
-
-      {/* BENEFICIOS */}
-      {Array.isArray(home.benefit_item) && (
-        <section style={{ padding: "120px 20px", textAlign: "center" }}>
-          <div className="panel">
-            <h2>Beneficios</h2>
-            {home.benefit_item.map((item: any, i: number) => (
-              <p key={i}>{item.title}</p>
-            ))}
-          </div>
-        </section>
-      )}
-
-      {/* VISIÓN */}
-      {home.vision && (
-        <section style={{ padding: "120px 20px", textAlign: "center" }}>
-          <div className="panel">
-            <h2>Visión</h2>
-            <p>{home.vision}</p>
-          </div>
-        </section>
-      )}
-
       {/* SURVEY */}
       <section id="survey" style={{ padding: "120px 20px", textAlign: "center" }}>
         <div className="panel">
           <h2>Encuesta</h2>
-          <p>Ayúdanos a mejorar este sistema respondiendo esta breve encuesta.</p>
           <SurveyForm />
         </div>
       </section>
 
-      {/* FOOTER / CONTACTO */}
+      {/* CONTACTO */}
       {home.Contact1 && (
         <footer
           id="contacto"
@@ -291,7 +304,6 @@ export default function HomePage() {
             width: "100%",
             background: "#000",
             padding: "140px 20px",
-            marginTop: 160,
           }}
         >
           <div
@@ -320,4 +332,3 @@ export default function HomePage() {
     </main>
   );
 }
-
