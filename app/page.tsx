@@ -133,7 +133,6 @@ function SurveyForm() {
         <option value="poco_util">Poco útil</option>
       </select>
 
-      {/* VALORES CORRECTOS SEGÚN STRAPI */}
       <select
         name="usage_environment"
         onChange={handleChange}
@@ -149,7 +148,6 @@ function SurveyForm() {
         <option value="otro">Otro</option>
       </select>
 
-      {/* VALORES CORRECTOS SEGÚN STRAPI */}
       <select
         name="budget_range"
         onChange={handleChange}
@@ -281,6 +279,9 @@ export default function HomePage() {
       {/* NAVBAR */}
       <nav className="navbar">
         <a href="#home">Home</a>
+        <a href="#purpose">Propósito</a>
+        <a href="#vision">Visión</a>
+        <a href="#valores">Valores</a>
         <a href="#survey">Encuesta</a>
         <a href="#contacto">Contacto</a>
       </nav>
@@ -294,6 +295,44 @@ export default function HomePage() {
           {renderRichText(home.hero_description)}
         </div>
       </section>
+
+      {/* PURPOSE */}
+      {home.purpose && (
+        <section id="purpose" style={{ padding: "120px 20px", textAlign: "center" }}>
+          <div className="panel">
+            <h2>Propósito</h2>
+            {renderRichText(home.purpose)}
+          </div>
+        </section>
+      )}
+
+      {/* VISION */}
+      {home.vision && (
+        <section id="vision" style={{ padding: "120px 20px", textAlign: "center" }}>
+          <div className="panel">
+            <h2>Visión</h2>
+            <p style={{ maxWidth: 700, margin: "0 auto" }}>
+              {home.vision}
+            </p>
+          </div>
+        </section>
+      )}
+
+      {/* VALORES */}
+      {home.Valores && (
+        <section id="valores" style={{ padding: "120px 20px", textAlign: "center" }}>
+          <div className="panel">
+            <h2>Valores</h2>
+            <ul style={{ maxWidth: 600, margin: "0 auto", textAlign: "left" }}>
+              {home.Valores.split("\n").map((v: string, i: number) => (
+                <li key={i} style={{ marginBottom: 8 }}>
+                  {v}
+                </li>
+              ))}
+            </ul>
+          </div>
+        </section>
+      )}
 
       {/* SURVEY */}
       <section id="survey" style={{ padding: "120px 20px", textAlign: "center" }}>
@@ -339,4 +378,3 @@ export default function HomePage() {
     </main>
   );
 }
-
