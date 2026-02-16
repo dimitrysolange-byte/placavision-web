@@ -456,8 +456,19 @@ export default function HomePage() {
               {home.Contact1.email && <p>📧 {home.Contact1.email}</p>}
               {home.Contact1.phone && <p>📞 {home.Contact1.phone}</p>}
               {home.Contact1.whatsapp && (
-                <p>💬 WhatsApp: {home.Contact1.whatsapp}</p>
-              )}
+  <p>
+    💬 WhatsApp:{" "}
+    <a
+      href={`https://wa.me/${home.Contact1.whatsapp.replace(/\D/g, "")}`}
+      target="_blank"
+      rel="noopener noreferrer"
+      style={{ color: "#00ffcc", textDecoration: "none", fontWeight: 600 }}
+    >
+      {home.Contact1.whatsapp}
+    </a>
+  </p>
+)}
+
             </div>
           </div>
         </footer>
