@@ -1,5 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
+import { animate, utils } from "animejs";
 
 /* ================= FETCH ================= */
 async function getHome() {
@@ -205,6 +206,21 @@ export default function HomePage() {
       setHome(data?.data);
     }
     load();
+
+    // Animación
+    utils.set(".square", {
+      "--radius": "4px",
+      "--x": "0rem",
+      "--pseudo-el-after-scale": "1",
+      borderRadius: () => "var(--radius)",
+      translateX: () => "var(--x)",
+    });
+
+    animate(".square", {
+      "--radius": "20px",
+      "--x": "16.5rem",
+      "--pseudo-el-after-scale": "1.55",
+    });
   }, []);
 
   if (!home) {
@@ -249,6 +265,13 @@ export default function HomePage() {
           border-radius: 26px;
           backdrop-filter: blur(12px);
           background: rgba(0,0,0,0.45);
+        }
+
+        .square {
+          width: 80px;
+          height: 80px;
+          background: #00A878;
+          margin: 20px auto;
         }
 
         .navbar {
@@ -333,6 +356,30 @@ export default function HomePage() {
           </div>
         </section>
       )}
+
+      {/* FUNCIONALIDADES */}
+      <section style={{ padding: "120px 20px", textAlign: "center" }}>
+        <div className="panel">
+          <h2>Funcionalidades del sistema</h2>
+
+          <p style={{ maxWidth: 700, margin: "20px auto", lineHeight: 1.7 }}>
+            Nuestro sistema de inteligencia artificial analiza vehículos en
+            tiempo real mediante cámaras. Detecta placas, las compara con bases
+            de datos de vehículos reportados como robados y genera alertas
+            automáticas para autoridades o empresas de seguridad.
+          </p>
+
+          <div className="square"></div>
+
+          <ul style={{ maxWidth: 600, margin: "40px auto", textAlign: "left" }}>
+            <li>Detección automática de placas en tiempo real</li>
+            <li>Comparación con bases de datos de vehículos robados</li>
+            <li>Alertas instantáneas al detectar coincidencias</li>
+            <li>Integración con cámaras existentes</li>
+            <li>Panel de monitoreo para autoridades y empresas</li>
+          </ul>
+        </div>
+      </section>
 
       {/* SURVEY */}
       <section id="survey" style={{ padding: "120px 20px", textAlign: "center" }}>
