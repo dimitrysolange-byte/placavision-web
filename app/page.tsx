@@ -194,6 +194,73 @@ function SurveyForm() {
     </form>
   );
 }
+/* ================= DRAG CARDS ================= */
+function FeatureCards() {
+  const features = [
+    "Detección automática de placas en tiempo real",
+    "Comparación con bases de datos de vehículos robados",
+    "Alertas instantáneas al detectar coincidencias",
+    "Integración con cámaras existentes",
+    "Panel de monitoreo para autoridades y empresas",
+  ];
+
+  function handleDragStart(e: any) {
+    e.dataTransfer.setData("text/plain", e.target.id);
+  }
+
+  function handleDrop(e: any) {
+    e.preventDefault();
+    const id = e.dataTransfer.getData("text");
+    const draggable = document.getElementById(id);
+    const dropzone = e.currentTarget;
+
+    if (draggable && dropzone) {
+      dropzone.appendChild(draggable);
+    }
+  }
+
+  function allowDrop(e: any) {
+    e.preventDefault();
+  }
+
+  return (
+    <div
+      onDrop={handleDrop}
+      onDragOver={allowDrop}
+      style={{
+        display: "flex",
+        flexWrap: "wrap",
+        gap: 20,
+        justifyContent: "center",
+        marginTop: 40,
+        minHeight: 200,
+      }}
+    >
+      {features.map((text, i) => (
+        <div
+          key={i}
+          id={`card-${i}`}
+          draggable
+          onDragStart={handleDragStart}
+          style={{
+            width: 220,
+            padding: 20,
+            borderRadius: 16,
+            background: "rgba(255,255,255,0.1)",
+            backdropFilter: "blur(8px)",
+            cursor: "grab",
+            textAlign: "center",
+            fontWeight: 500,
+            boxShadow: "0 10px 25px rgba(0,0,0,0.3)",
+            transition: "transform 0.2s",
+          }}
+        >
+          {text}
+        </div>
+      ))}
+    </div>
+  );
+}
 
 /* ================= PAGE ================= */
 export default function HomePage() {
@@ -333,6 +400,22 @@ export default function HomePage() {
           </div>
         </section>
       )}
+      {/* FUNCIONALIDADES */}
+<section style={{ padding: "120px 20px", textAlign: "center" }}>
+  <div className="panel">
+    <h2>Funcionalidades del sistema</h2>
+
+    <p style={{ maxWidth: 700, margin: "20px auto", lineHeight: 1.7 }}>
+      Nuestro sistema de inteligencia artificial analiza vehículos en tiempo
+      real mediante cámaras. Detecta placas, las compara con bases de datos de
+      vehículos robados y genera alertas automáticas para autoridades o
+      empresas de seguridad.
+    </p>
+
+    <FeatureCards />
+  </div>
+</section>
+
 
       {/* SURVEY */}
       <section id="survey" style={{ padding: "120px 20px", textAlign: "center" }}>
