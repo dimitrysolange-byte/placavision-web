@@ -350,6 +350,7 @@ export default function HomePage() {
         <a href="#vision">Visión</a>
         <a href="#valores">Valores</a>
         <a href="#survey">Encuesta</a>
+        <a href="#funcionalidades">Funcionalidades</a>
         <a href="#contacto">Contacto</a>
       </nav>
 
@@ -401,7 +402,10 @@ export default function HomePage() {
         </section>
       )}
       {/* FUNCIONALIDADES */}
-<section style={{ padding: "120px 20px", textAlign: "center" }}>
+{/* FUNCIONALIDADES */}
+{/* FUNCIONALIDADES */}
+<section id="funcionalidades" style={{ padding: "120px 20px", textAlign: "center" }}>
+
   <div className="panel">
     <h2>Funcionalidades del sistema</h2>
 
